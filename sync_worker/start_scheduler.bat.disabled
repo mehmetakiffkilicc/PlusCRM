@@ -1,0 +1,3 @@
+@echo off
+cd /d "c:\Users\Akif\Desktop\BackendFronend\sync_worker"
+"c:\Users\Akif\Desktop\BackendFronend\.venv\Scripts\python.exe" "c:\Users\Akif\Desktop\BackendFronend\sync_worker\scheduler_service.py"

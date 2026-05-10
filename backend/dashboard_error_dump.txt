@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\Akif\Desktop\BackendFronend\backend\api\analytics\dashboard_view.py", line 4017, in get_dashboard_kpis
+    print(f"PERF: Fast path KPI (gunlukciroozet) took {time.perf_counter() - t_fast:.4f}s", file=sys.stderr)
+                                                                                                 ^^^
+NameError: name 'sys' is not defined. Did you forget to import 'sys'?

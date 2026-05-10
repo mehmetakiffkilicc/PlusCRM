@@ -1,0 +1,2 @@
+web: cd backend && sh start.sh
+worker: cd sync_worker && python scheduler_service.py

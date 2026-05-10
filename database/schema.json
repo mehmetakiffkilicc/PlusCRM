@@ -1,0 +1,3548 @@
+{
+  "Markalar": {
+    "sql": "CREATE TABLE Markalar (\n            id INTEGER PRIMARY KEY AUTOINCREMENT,\n            ad TEXT UNIQUE NOT NULL\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "ad",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "sqlite_sequence": {
+    "sql": "CREATE TABLE sqlite_sequence(name,seq)",
+    "columns": [
+      {
+        "id": 0,
+        "name": "name",
+        "type": "",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 1,
+        "name": "seq",
+        "type": "",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "Kategoriler": {
+    "sql": "CREATE TABLE Kategoriler (\n            id INTEGER PRIMARY KEY AUTOINCREMENT,\n            ana TEXT NOT NULL,\n            alt1 TEXT,\n            alt2 TEXT,\n            UNIQUE(ana, alt1, alt2)\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "ana",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "alt1",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "alt2",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "Magazalar": {
+    "sql": "CREATE TABLE Magazalar (\n            id INTEGER PRIMARY KEY AUTOINCREMENT,\n            ad TEXT UNIQUE NOT NULL,\n            bolge TEXT\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "ad",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "bolge",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "Urunler": {
+    "sql": "CREATE TABLE Urunler (\n            id INTEGER PRIMARY KEY AUTOINCREMENT,\n            kod TEXT UNIQUE NOT NULL,\n            ad TEXT NOT NULL,\n            marka_id INTEGER,\n            kategori_id INTEGER,\n            FOREIGN KEY (marka_id) REFERENCES Markalar(id),\n            FOREIGN KEY (kategori_id) REFERENCES Kategoriler(id)\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "kod",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "ad",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "marka_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "kategori_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "Kampanyalar": {
+    "sql": "CREATE TABLE Kampanyalar (\n            id INTEGER PRIMARY KEY,\n            ad TEXT,\n            baslangic DATE,\n            bitis DATE\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "ad",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "baslangic",
+        "type": "DATE",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "bitis",
+        "type": "DATE",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "Musteriler": {
+    "sql": "CREATE TABLE Musteriler (\n            id INTEGER PRIMARY KEY,\n            ad TEXT,\n            telefon TEXT,\n            tip TEXT,\n            onay_durumu TEXT,\n            kayit_tarihi DATE,\n            kayit_magazasi TEXT\n        , rfm_segment TEXT, rfm_r_score INTEGER, rfm_f_score INTEGER, rfm_m_score INTEGER, rfm_updated_at TEXT)",
+    "columns": [
+      {
+        "id": 0,
+        "name": "id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "ad",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "telefon",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "tip",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "onay_durumu",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "kayit_tarihi",
+        "type": "DATE",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "kayit_magazasi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "rfm_segment",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 8,
+        "name": "rfm_r_score",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 9,
+        "name": "rfm_f_score",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 10,
+        "name": "rfm_m_score",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 11,
+        "name": "rfm_updated_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "GunlukOzet": {
+    "sql": "CREATE TABLE GunlukOzet (\n            tarih DATE NOT NULL,\n            magaza_id INTEGER,\n            kategori_id INTEGER,\n            marka_id INTEGER,\n            toplam_ciro REAL DEFAULT 0,\n            fis_sayisi INTEGER DEFAULT 0,\n            musteri_sayisi INTEGER DEFAULT 0,\n            urun_adedi REAL DEFAULT 0,\n            PRIMARY KEY (tarih, magaza_id, kategori_id, marka_id)\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "tarih",
+        "type": "DATE",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "magaza_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 2
+      },
+      {
+        "id": 2,
+        "name": "kategori_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 3
+      },
+      {
+        "id": 3,
+        "name": "marka_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 4
+      },
+      {
+        "id": 4,
+        "name": "toplam_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "fis_sayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "musteri_sayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "urun_adedi",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      }
+    ]
+  },
+  "GenelOzet": {
+    "sql": "CREATE TABLE GenelOzet (\n            ay TEXT NOT NULL,\n            magaza_id INTEGER,\n            \n            toplam_ciro REAL DEFAULT 0,\n            toplam_fis INTEGER DEFAULT 0,\n            toplam_miktar REAL DEFAULT 0,\n            \n            crm_ciro REAL DEFAULT 0,\n            crm_fis INTEGER DEFAULT 0,\n            crm_musteri INTEGER DEFAULT 0,\n            crm_miktar REAL DEFAULT 0,\n            \n            anonim_ciro REAL DEFAULT 0,\n            anonim_fis INTEGER DEFAULT 0,\n            \n            crm_sepet_ort REAL DEFAULT 0,\n            anonim_sepet_ort REAL DEFAULT 0,\n            crm_oran_ciro REAL DEFAULT 0,\n            crm_oran_fis REAL DEFAULT 0,\n            \n            PRIMARY KEY (ay, magaza_id)\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "ay",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "magaza_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 2
+      },
+      {
+        "id": 2,
+        "name": "toplam_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "toplam_fis",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "toplam_miktar",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "crm_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "crm_fis",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "crm_musteri",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 8,
+        "name": "crm_miktar",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 9,
+        "name": "anonim_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 10,
+        "name": "anonim_fis",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 11,
+        "name": "crm_sepet_ort",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 12,
+        "name": "anonim_sepet_ort",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 13,
+        "name": "crm_oran_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 14,
+        "name": "crm_oran_fis",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      }
+    ]
+  },
+  "KategoriKarsilastirma": {
+    "sql": "CREATE TABLE KategoriKarsilastirma (\n            ay TEXT NOT NULL,\n            kategori TEXT NOT NULL,\n            \n            toplam_ciro REAL DEFAULT 0,\n            crm_ciro REAL DEFAULT 0,\n            anonim_ciro REAL DEFAULT 0,\n            \n            crm_fis INTEGER DEFAULT 0,\n            anonim_fis INTEGER DEFAULT 0,\n            \n            crm_sepet_ort REAL DEFAULT 0,\n            anonim_sepet_ort REAL DEFAULT 0,\n            \n            PRIMARY KEY (ay, kategori)\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "ay",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "kategori",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 2
+      },
+      {
+        "id": 2,
+        "name": "toplam_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "crm_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "anonim_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "crm_fis",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "anonim_fis",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "crm_sepet_ort",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 8,
+        "name": "anonim_sepet_ort",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      }
+    ]
+  },
+  "MarkaKarsilastirma": {
+    "sql": "CREATE TABLE MarkaKarsilastirma (\n            ay TEXT NOT NULL,\n            marka TEXT NOT NULL,\n            \n            toplam_ciro REAL DEFAULT 0,\n            crm_ciro REAL DEFAULT 0,\n            crm_musteri INTEGER DEFAULT 0,\n            \n            PRIMARY KEY (ay, marka)\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "ay",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "marka",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 2
+      },
+      {
+        "id": 2,
+        "name": "toplam_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "crm_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "crm_musteri",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      }
+    ]
+  },
+  "KampanyaOzet": {
+    "sql": "CREATE TABLE KampanyaOzet (\n            ay TEXT NOT NULL,\n            kampanya_id INTEGER NOT NULL,\n            kampanya_ad TEXT,\n            \n            katilim_sayisi INTEGER DEFAULT 0,\n            toplam_ciro REAL DEFAULT 0,\n            benzersiz_musteri INTEGER DEFAULT 0,\n            \n            PRIMARY KEY (ay, kampanya_id)\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "ay",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "kampanya_id",
+        "type": "INTEGER",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 2
+      },
+      {
+        "id": 2,
+        "name": "kampanya_ad",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "katilim_sayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "toplam_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "benzersiz_musteri",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      }
+    ]
+  },
+  "MusteriSadakat": {
+    "sql": "CREATE TABLE MusteriSadakat (\n            ay TEXT PRIMARY KEY,\n            \n            yeni_musteri INTEGER DEFAULT 0,\n            tekrar_musteri INTEGER DEFAULT 0,\n            kayip_musteri INTEGER DEFAULT 0,\n            \n            yeni_musteri_sepet REAL DEFAULT 0,\n            tekrar_musteri_sepet REAL DEFAULT 0\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "ay",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "yeni_musteri",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "tekrar_musteri",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "kayip_musteri",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "yeni_musteri_sepet",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "tekrar_musteri_sepet",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      }
+    ]
+  },
+  "SyncMeta": {
+    "sql": "CREATE TABLE SyncMeta (\n            key TEXT PRIMARY KEY,\n            value TEXT,\n            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "key",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "value",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "updated_at",
+        "type": "DATETIME",
+        "notnull": 0,
+        "dflt_value": "CURRENT_TIMESTAMP",
+        "pk": 0
+      }
+    ]
+  },
+  "GunlukCiroOzet": {
+    "sql": "CREATE TABLE GunlukCiroOzet (\n            tarih DATE PRIMARY KEY,\n\n            -- Sat\u0131\u015f Metrikleri\n            toplam_ciro REAL DEFAULT 0,\n            toplam_fis INTEGER DEFAULT 0,\n            toplam_musteri INTEGER DEFAULT 0,\n            toplam_miktar REAL DEFAULT 0,\n\n            -- Sepet Ortalamas\u0131\n            sepet_ortalamasi REAL DEFAULT 0,\n\n            -- M\u00fc\u015fteri Ba\u015f\u0131na Ortalama\n            musteri_basina_ciro REAL DEFAULT 0,\n            musteri_basina_fis REAL DEFAULT 0,\n\n            -- SKU Say\u0131s\u0131 (benzersiz \u00fcr\u00fcn)\n            sku_sayisi INTEGER DEFAULT 0,\n\n            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "tarih",
+        "type": "DATE",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "toplam_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "toplam_fis",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "toplam_musteri",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "toplam_miktar",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "sepet_ortalamasi",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "musteri_basina_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "musteri_basina_fis",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 8,
+        "name": "sku_sayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 9,
+        "name": "updated_at",
+        "type": "DATETIME",
+        "notnull": 0,
+        "dflt_value": "CURRENT_TIMESTAMP",
+        "pk": 0
+      }
+    ]
+  },
+  "MagazaGunlukOzet": {
+    "sql": "CREATE TABLE MagazaGunlukOzet (\n            tarih DATE NOT NULL,\n            magaza_id INTEGER NOT NULL,\n\n            toplam_ciro REAL DEFAULT 0,\n            toplam_fis INTEGER DEFAULT 0,\n            toplam_musteri INTEGER DEFAULT 0,\n            toplam_miktar REAL DEFAULT 0,\n            sepet_ortalamasi REAL DEFAULT 0,\n            sku_sayisi INTEGER DEFAULT 0,\n\n            PRIMARY KEY (tarih, magaza_id)\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "tarih",
+        "type": "DATE",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "magaza_id",
+        "type": "INTEGER",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 2
+      },
+      {
+        "id": 2,
+        "name": "toplam_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "toplam_fis",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "toplam_musteri",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "toplam_miktar",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "sepet_ortalamasi",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "sku_sayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      }
+    ]
+  },
+  "GlobalStatlar": {
+    "sql": "CREATE TABLE GlobalStatlar (\n            key TEXT PRIMARY KEY,\n            value REAL,\n            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "key",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "value",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "updated_at",
+        "type": "DATETIME",
+        "notnull": 0,
+        "dflt_value": "CURRENT_TIMESTAMP",
+        "pk": 0
+      }
+    ]
+  },
+  "CrmOzet": {
+    "sql": "CREATE TABLE CrmOzet (\n        tarih TEXT NOT NULL,\n        ay TEXT NOT NULL,\n        magaza_id INTEGER,\n        kategori_id INTEGER,\n        marka_id INTEGER,\n        \n        toplam_ciro REAL DEFAULT 0,\n        toplam_fis INTEGER DEFAULT 0,\n        toplam_musteri INTEGER DEFAULT 0,\n        toplam_miktar REAL DEFAULT 0,\n        \n        sepet_ort REAL DEFAULT 0,\n        \n        PRIMARY KEY (tarih, magaza_id, kategori_id, marka_id)\n    )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "tarih",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "ay",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "magaza_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 2
+      },
+      {
+        "id": 3,
+        "name": "kategori_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 3
+      },
+      {
+        "id": 4,
+        "name": "marka_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 4
+      },
+      {
+        "id": 5,
+        "name": "toplam_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "toplam_fis",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "toplam_musteri",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 8,
+        "name": "toplam_miktar",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 9,
+        "name": "sepet_ort",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      }
+    ]
+  },
+  "sqlite_stat1": {
+    "sql": "CREATE TABLE sqlite_stat1(tbl,idx,stat)",
+    "columns": [
+      {
+        "id": 0,
+        "name": "tbl",
+        "type": "",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 1,
+        "name": "idx",
+        "type": "",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "stat",
+        "type": "",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "Cache_KPI": {
+    "sql": "CREATE TABLE Cache_KPI (\n                        key TEXT PRIMARY KEY,\n                        value REAL,\n                        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP\n                    )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "key",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "value",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "updated_at",
+        "type": "DATETIME",
+        "notnull": 0,
+        "dflt_value": "CURRENT_TIMESTAMP",
+        "pk": 0
+      }
+    ]
+  },
+  "AylikMusteriOzet": {
+    "sql": "CREATE TABLE AylikMusteriOzet (\n                yil INTEGER,\n                ay TEXT, -- YYYY-MM\n                musteri_sayisi INTEGER,\n                PRIMARY KEY (ay)\n            )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "yil",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 1,
+        "name": "ay",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 2,
+        "name": "musteri_sayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "YillikMusteriOzet": {
+    "sql": "CREATE TABLE YillikMusteriOzet (\n                yil INTEGER,\n                musteri_sayisi INTEGER,\n                PRIMARY KEY (yil)\n            )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "yil",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "musteri_sayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "UrunBirliktelikleri": {
+    "sql": "CREATE TABLE UrunBirliktelikleri (id INTEGER PRIMARY KEY AUTOINCREMENT, urun_id_1 INTEGER, urun_id_2 INTEGER, confidence REAL, lift REAL, ortak_fis_sayisi INTEGER, tip TEXT, analiz_tarihi DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY(urun_id_1) REFERENCES Urunler(id), FOREIGN KEY(urun_id_2) REFERENCES Urunler(id))",
+    "columns": [
+      {
+        "id": 0,
+        "name": "id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "urun_id_1",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "urun_id_2",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "confidence",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "lift",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "ortak_fis_sayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "tip",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "analiz_tarihi",
+        "type": "DATETIME",
+        "notnull": 0,
+        "dflt_value": "CURRENT_TIMESTAMP",
+        "pk": 0
+      }
+    ]
+  },
+  "GrupBirliktelikleri": {
+    "sql": "CREATE TABLE GrupBirliktelikleri (id INTEGER PRIMARY KEY AUTOINCREMENT, marka_id_1 INTEGER, kategori_id_1 INTEGER, marka_id_2 INTEGER, kategori_id_2 INTEGER, confidence REAL, lift REAL, ortak_fis_sayisi INTEGER, tip TEXT, analiz_tarihi DATETIME DEFAULT CURRENT_TIMESTAMP, ortak_musteri_sayisi INTEGER DEFAULT 0)",
+    "columns": [
+      {
+        "id": 0,
+        "name": "id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "marka_id_1",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "kategori_id_1",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "marka_id_2",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "kategori_id_2",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "confidence",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "lift",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "ortak_fis_sayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 8,
+        "name": "tip",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 9,
+        "name": "analiz_tarihi",
+        "type": "DATETIME",
+        "notnull": 0,
+        "dflt_value": "CURRENT_TIMESTAMP",
+        "pk": 0
+      },
+      {
+        "id": 10,
+        "name": "ortak_musteri_sayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      }
+    ]
+  },
+  "KategoriEtiketleri": {
+    "sql": "CREATE TABLE KategoriEtiketleri (\n                id INTEGER PRIMARY KEY AUTOINCREMENT,\n                kategori_id INTEGER,\n                etiket TEXT,\n                tarih TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n                FOREIGN KEY (kategori_id) REFERENCES Kategoriler(id)\n            )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "kategori_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "etiket",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "tarih",
+        "type": "TIMESTAMP",
+        "notnull": 0,
+        "dflt_value": "CURRENT_TIMESTAMP",
+        "pk": 0
+      }
+    ]
+  },
+  "MusteriEtiketleri": {
+    "sql": "CREATE TABLE MusteriEtiketleri (\n            id INTEGER PRIMARY KEY AUTOINCREMENT,\n            musteri_id INTEGER,\n            etiket_grubu TEXT,\n            etiket_adi TEXT,\n            skor REAL DEFAULT 1.0,\n            analiz_tarihi TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n            UNIQUE(musteri_id, etiket_adi)\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "musteri_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "etiket_grubu",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "etiket_adi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "skor",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "1.0",
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "analiz_tarihi",
+        "type": "TIMESTAMP",
+        "notnull": 0,
+        "dflt_value": "CURRENT_TIMESTAMP",
+        "pk": 0
+      }
+    ]
+  },
+  "UrunPerformansDetay": {
+    "sql": "CREATE TABLE UrunPerformansDetay (\n    UrunID INTEGER PRIMARY KEY,\n    UrunAdi TEXT,\n    KategoriID INTEGER,\n    KategoriAdi TEXT,\n    MarkaID INTEGER,\n    MarkaAdi TEXT,\n    GuncelFiyat REAL,\n    StokMiktari INTEGER,\n    UrunOlusturmaTarihi DATETIME,\n    \n    -- Sat\u0131\u015f Metrikleri (Son 7 G\u00fcn)\n    Son7GunSatis INTEGER DEFAULT 0,\n    Son7GunCiro REAL DEFAULT 0,\n    Son7GunMusteriSayisi INTEGER DEFAULT 0,\n    \n    -- Sat\u0131\u015f Metrikleri (Son 30 G\u00fcn)\n    Son30GunSatis INTEGER DEFAULT 0,\n    Son30GunCiro REAL DEFAULT 0,\n    Son30GunMusteriSayisi INTEGER DEFAULT 0,\n    Son30GunOrtFiyat REAL DEFAULT 0,\n    \n    -- Sat\u0131\u015f Metrikleri (Son 90 G\u00fcn)\n    Son90GunSatis INTEGER DEFAULT 0,\n    Son90GunCiro REAL DEFAULT 0,\n    Son90GunMusteriSayisi INTEGER DEFAULT 0,\n    \n    -- T\u00fcm Zamanlar\n    ToplamSatis INTEGER DEFAULT 0,\n    ToplamCiro REAL DEFAULT 0,\n    ToplamMusteriSayisi INTEGER DEFAULT 0,\n    IlkSatisTarihi DATETIME,\n    SonSatisTarihi DATETIME,\n    \n    -- Trend Analizi\n    Trend_7_30 INTEGER DEFAULT 0, -- 1: Yukar\u0131, 0: Stabil, -1: A\u015fa\u011f\u0131\n    Trend_30_60 INTEGER DEFAULT 0,\n    HizTrendi TEXT, -- 'Hizlaniyor', 'Yavasliyor', 'Stabil'\n    \n    -- Stok Analizi\n    StokDurumu TEXT, -- 'Tukendi', 'Kritik', 'Dusuk', 'Normal', 'Fazla'\n    GunlukOrtSatis REAL DEFAULT 0,\n    TahminiStokGunu REAL DEFAULT 0,\n    \n    -- Performans\n    PerformansKategori TEXT, -- 'Yildiz', 'Populer', 'Orta', 'Dusuk', 'Durgun'\n    KategoriIcindeSira INTEGER,\n    \n    -- Birliktelik Analizi\n    BirlikteSatilanUrunSayisi INTEGER DEFAULT 0,\n    EnCokBirlikteSatilan TEXT,\n    CrossSellPotansiyeli REAL DEFAULT 0,\n    \n    -- Uyar\u0131lar\n    UyariDurumu TEXT, -- 'Stok Tukeniyor', 'Fazla Stok', 'Trend Dususuyor', 'Normal'\n    \n    GuncellemeTarihi DATETIME DEFAULT CURRENT_TIMESTAMP\n)",
+    "columns": [
+      {
+        "id": 0,
+        "name": "UrunID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "UrunAdi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "KategoriID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "KategoriAdi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "MarkaID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "MarkaAdi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "GuncelFiyat",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "StokMiktari",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 8,
+        "name": "UrunOlusturmaTarihi",
+        "type": "DATETIME",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 9,
+        "name": "Son7GunSatis",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 10,
+        "name": "Son7GunCiro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 11,
+        "name": "Son7GunMusteriSayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 12,
+        "name": "Son30GunSatis",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 13,
+        "name": "Son30GunCiro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 14,
+        "name": "Son30GunMusteriSayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 15,
+        "name": "Son30GunOrtFiyat",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 16,
+        "name": "Son90GunSatis",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 17,
+        "name": "Son90GunCiro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 18,
+        "name": "Son90GunMusteriSayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 19,
+        "name": "ToplamSatis",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 20,
+        "name": "ToplamCiro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 21,
+        "name": "ToplamMusteriSayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 22,
+        "name": "IlkSatisTarihi",
+        "type": "DATETIME",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 23,
+        "name": "SonSatisTarihi",
+        "type": "DATETIME",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 24,
+        "name": "Trend_7_30",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 25,
+        "name": "Trend_30_60",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 26,
+        "name": "HizTrendi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 27,
+        "name": "StokDurumu",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 28,
+        "name": "GunlukOrtSatis",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 29,
+        "name": "TahminiStokGunu",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 30,
+        "name": "PerformansKategori",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 31,
+        "name": "KategoriIcindeSira",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 32,
+        "name": "BirlikteSatilanUrunSayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 33,
+        "name": "EnCokBirlikteSatilan",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 34,
+        "name": "CrossSellPotansiyeli",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 35,
+        "name": "UyariDurumu",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 36,
+        "name": "GuncellemeTarihi",
+        "type": "DATETIME",
+        "notnull": 0,
+        "dflt_value": "CURRENT_TIMESTAMP",
+        "pk": 0
+      }
+    ]
+  },
+  "KategoriPerformansOzet": {
+    "sql": "CREATE TABLE KategoriPerformansOzet (\n        KategoriID INTEGER PRIMARY KEY,\n        KategoriAdi TEXT,\n        UstKategoriID INTEGER,\n        ToplamUrunSayisi INTEGER,\n        AktifUrunSayisi INTEGER,\n        \n        -- G\u00dcNL\u00dcK (GunlukCiroOzet & Satislar)\n        BugunCiro REAL,\n        DunCiro REAL,\n        Son7GunToplamCiro REAL,\n        Son30GunToplamCiro REAL,\n        GunlukOrtCiro REAL,\n        \n        -- KAR\u015eILA\u015eTIRMA (KategoriKarsilastirma)\n        KarsilastirmaSkoru REAL,\n        RakipKategoriler TEXT,\n        \n        -- SATI\u015e PERFORMANSI (Satislar)\n        Son30GunSatis REAL,\n        Son90GunSatis REAL,\n        ToplamSatis REAL,\n        ToplamCiro REAL,\n        ToplamMusteriSayisi INTEGER,\n        \n        -- ORTALAMALAR\n        OrtalamaUrunFiyat REAL,\n        OrtalamaSepetutar REAL,\n        OrtalamaSiparisBuyuklugu REAL,\n        \n        -- TREND\n        Trend INTEGER, -- 1: Art\u0131\u015f, 0: Stabil, -1: D\u00fc\u015f\u00fc\u015f\n        TrendYuzde REAL,\n        Momentum TEXT, -- 'Gucleniyor', 'Zayifliyor', 'Stabil'\n        \n        -- STOK (Urunler & Satislar)\n        ToplamStokDegeri REAL,\n        ToplamStokAdedi REAL,\n        StokDevirHizi REAL,\n        \n        -- SINIFLANDIRMA\n        PerformansKategori TEXT, -- 'Top', 'Yukselen', 'Stabil', 'Dusen'\n        PazarPayi REAL,\n        Siralama INTEGER,\n        LastUpdated TEXT\n    )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "KategoriID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "KategoriAdi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "UstKategoriID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "ToplamUrunSayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "AktifUrunSayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "BugunCiro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "DunCiro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "Son7GunToplamCiro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 8,
+        "name": "Son30GunToplamCiro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 9,
+        "name": "GunlukOrtCiro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 10,
+        "name": "KarsilastirmaSkoru",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 11,
+        "name": "RakipKategoriler",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 12,
+        "name": "Son30GunSatis",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 13,
+        "name": "Son90GunSatis",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 14,
+        "name": "ToplamSatis",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 15,
+        "name": "ToplamCiro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 16,
+        "name": "ToplamMusteriSayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 17,
+        "name": "OrtalamaUrunFiyat",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 18,
+        "name": "OrtalamaSepetutar",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 19,
+        "name": "OrtalamaSiparisBuyuklugu",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 20,
+        "name": "Trend",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 21,
+        "name": "TrendYuzde",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 22,
+        "name": "Momentum",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 23,
+        "name": "ToplamStokDegeri",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 24,
+        "name": "ToplamStokAdedi",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 25,
+        "name": "StokDevirHizi",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 26,
+        "name": "PerformansKategori",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 27,
+        "name": "PazarPayi",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 28,
+        "name": "Siralama",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 29,
+        "name": "LastUpdated",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "SegmentUrunTercihleri": {
+    "sql": "CREATE TABLE SegmentUrunTercihleri (\n        ID INTEGER PRIMARY KEY AUTOINCREMENT,\n        RFM_Segment TEXT,\n        KategoriID INTEGER,\n        KategoriAdi TEXT,\n        UrunID INTEGER,\n        UrunAdi TEXT,\n        MarkaID INTEGER,\n        MarkaAdi TEXT,\n        \n        -- SEGMENT B\u0130LG\u0130LER\u0130\n        SegmentToplamMusteri INTEGER,\n        SegmentToplamCiro REAL,\n        SegmentOrtalamaSepet REAL,\n        \n        -- \u00dcR\u00dcN-SEGMENT \u0130L\u0130\u015eK\u0130S\u0130 (Son 90 g\u00fcn)\n        AlanMusteriSayisi INTEGER,\n        SatisAdedi REAL,\n        ToplamCiro REAL,\n        OrtalamaTutar REAL,\n        \n        -- PENETRASYON\n        Penetrasyon REAL,\n        GenelPenetrasyon REAL,\n        SegmentIndeks REAL,\n        \n        -- F\u0130YAT DUYARLILI\u011eI\n        SegmentOrtalamaSatisFiyat REAL,\n        GenelOrtalamaSatisFiyat REAL,\n        FiyatToleransi REAL,\n        \n        -- SADAKAT\n        TekrarAlis INTEGER,\n        TekrarAlisOran REAL,\n        OrtalamaSatinAlmaSayisi REAL,\n        \n        -- SINIFLANDIRMA\n        TercihSeviye TEXT, -- 'Favori', 'Sevilen', 'Normal', 'Az Tercih Edilen'\n        OneriDurumu TEXT, -- 'Kesinlikle Oner', 'Oner', 'Kosullu', 'Onerme'\n        KampanyaUygunluk TEXT, -- 'Cross-Sell', 'Loyalty', 'Win-Back', 'Up-Sell'\n        \n        -- SKORLAR\n        OneriSkoru REAL,\n        PotansiyelCiro REAL,\n        RiskSkoru REAL,\n        LastUpdated TEXT\n    )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "ID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "RFM_Segment",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "KategoriID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "KategoriAdi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "UrunID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "UrunAdi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "MarkaID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "MarkaAdi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 8,
+        "name": "SegmentToplamMusteri",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 9,
+        "name": "SegmentToplamCiro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 10,
+        "name": "SegmentOrtalamaSepet",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 11,
+        "name": "AlanMusteriSayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 12,
+        "name": "SatisAdedi",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 13,
+        "name": "ToplamCiro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 14,
+        "name": "OrtalamaTutar",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 15,
+        "name": "Penetrasyon",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 16,
+        "name": "GenelPenetrasyon",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 17,
+        "name": "SegmentIndeks",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 18,
+        "name": "SegmentOrtalamaSatisFiyat",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 19,
+        "name": "GenelOrtalamaSatisFiyat",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 20,
+        "name": "FiyatToleransi",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 21,
+        "name": "TekrarAlis",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 22,
+        "name": "TekrarAlisOran",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 23,
+        "name": "OrtalamaSatinAlmaSayisi",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 24,
+        "name": "TercihSeviye",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 25,
+        "name": "OneriDurumu",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 26,
+        "name": "KampanyaUygunluk",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 27,
+        "name": "OneriSkoru",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 28,
+        "name": "PotansiyelCiro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 29,
+        "name": "RiskSkoru",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 30,
+        "name": "LastUpdated",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "GunlukMevsimsellik": {
+    "sql": "CREATE TABLE GunlukMevsimsellik (\n        tarih DATE PRIMARY KEY,\n        gercek_ciro REAL,\n        tahmin_ciro REAL,\n        trend REAL,\n        weekly_effect REAL,\n        yearly_effect REAL,\n        is_anomaly INTEGER,\n        anomaly_direction TEXT,\n        season TEXT,\n        trend_direction TEXT,\n        day_of_week INTEGER,\n        day_name TEXT\n    )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "tarih",
+        "type": "DATE",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "gercek_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "tahmin_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "trend",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "weekly_effect",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "yearly_effect",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "is_anomaly",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "anomaly_direction",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 8,
+        "name": "season",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 9,
+        "name": "trend_direction",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 10,
+        "name": "day_of_week",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 11,
+        "name": "day_name",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "MusteriOnerileri": {
+    "sql": "CREATE TABLE MusteriOnerileri (\n        musteri_id INTEGER,\n        urun_id INTEGER,\n        urun_ad TEXT,\n        kategori_ad TEXT,\n        oneri_skoru REAL,\n        oneri_nedeni TEXT,\n        updated_at DATETIME,\n        PRIMARY KEY (musteri_id, urun_id)\n    )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "musteri_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "urun_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 2
+      },
+      {
+        "id": 2,
+        "name": "urun_ad",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "kategori_ad",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "oneri_skoru",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "oneri_nedeni",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "updated_at",
+        "type": "DATETIME",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "tmp_repair_map": {
+    "sql": "CREATE TABLE tmp_repair_map (fis_no TEXT, satir_no INTEGER, stkKod TEXT)",
+    "columns": [
+      {
+        "id": 0,
+        "name": "fis_no",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 1,
+        "name": "satir_no",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "stkKod",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "tmp_fix": {
+    "sql": "CREATE TABLE tmp_fix (f TEXT, s INTEGER, u_id INTEGER)",
+    "columns": [
+      {
+        "id": 0,
+        "name": "f",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 1,
+        "name": "s",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "u_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "final_map": {
+    "sql": "CREATE TABLE final_map (f TEXT, s INTEGER, kod TEXT)",
+    "columns": [
+      {
+        "id": 0,
+        "name": "f",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 1,
+        "name": "s",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "kod",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "Satislar_New": {
+    "sql": "CREATE TABLE \"Satislar_New\" (\n            id INTEGER PRIMARY KEY AUTOINCREMENT,\n            fis_no TEXT NOT NULL,\n            musteri_id INTEGER,\n            tarih DATE NOT NULL,\n            saat INTEGER,\n            tutar REAL NOT NULL,\n            miktar REAL,\n            urun_id INTEGER,\n            magaza_id INTEGER,\n            belge_tipi TEXT,\n            kampanya_id INTEGER,\n            telefon TEXT,\n            onay_durumu TEXT,\n            satir_no INTEGER DEFAULT 1, kategori_id INTEGER, marka_id INTEGER,\n            FOREIGN KEY (musteri_id) REFERENCES Musteriler(id),\n            FOREIGN KEY (urun_id) REFERENCES Urunler(id),\n            FOREIGN KEY (magaza_id) REFERENCES Magazalar(id),\n            FOREIGN KEY (kampanya_id) REFERENCES Kampanyalar(id),\n            UNIQUE(fis_no, satir_no)\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "fis_no",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "musteri_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "tarih",
+        "type": "DATE",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "saat",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "tutar",
+        "type": "REAL",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "miktar",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "urun_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 8,
+        "name": "magaza_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 9,
+        "name": "belge_tipi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 10,
+        "name": "kampanya_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 11,
+        "name": "telefon",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 12,
+        "name": "onay_durumu",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 13,
+        "name": "satir_no",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "1",
+        "pk": 0
+      },
+      {
+        "id": 14,
+        "name": "kategori_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 15,
+        "name": "marka_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "Satislar": {
+    "sql": "CREATE TABLE \"Satislar\" (\n            id INTEGER PRIMARY KEY AUTOINCREMENT,\n            fis_no TEXT NOT NULL,\n            musteri_id INTEGER,\n            tarih DATE NOT NULL,\n            saat INTEGER,\n            tutar REAL NOT NULL,\n            miktar REAL,\n            urun_id INTEGER,\n            magaza_id INTEGER,\n            belge_tipi TEXT,\n            kampanya_id INTEGER,\n            telefon TEXT,\n            onay_durumu TEXT,\n            satir_no INTEGER DEFAULT 1, kategori_id INTEGER, marka_id INTEGER,\n            FOREIGN KEY (musteri_id) REFERENCES Musteriler(id),\n            FOREIGN KEY (urun_id) REFERENCES Urunler(id),\n            FOREIGN KEY (magaza_id) REFERENCES Magazalar(id),\n            FOREIGN KEY (kampanya_id) REFERENCES Kampanyalar(id),\n            UNIQUE(fis_no, satir_no)\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "fis_no",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "musteri_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "tarih",
+        "type": "DATE",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "saat",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "tutar",
+        "type": "REAL",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "miktar",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "urun_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 8,
+        "name": "magaza_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 9,
+        "name": "belge_tipi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 10,
+        "name": "kampanya_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 11,
+        "name": "telefon",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 12,
+        "name": "onay_durumu",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 13,
+        "name": "satir_no",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": "1",
+        "pk": 0
+      },
+      {
+        "id": 14,
+        "name": "kategori_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 15,
+        "name": "marka_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "SegmentOzet": {
+    "sql": "CREATE TABLE SegmentOzet (\n            segment TEXT PRIMARY KEY,\n            customer_count INTEGER,\n            total_revenue REAL,\n            transaction_count INTEGER,\n            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "segment",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "customer_count",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "total_revenue",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "transaction_count",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "updated_at",
+        "type": "TIMESTAMP",
+        "notnull": 0,
+        "dflt_value": "CURRENT_TIMESTAMP",
+        "pk": 0
+      }
+    ]
+  },
+  "BirliktelikStratejiSkorlari": {
+    "sql": "CREATE TABLE BirliktelikStratejiSkorlari (\n                        kategori_ad\u0131_1 TEXT,\n                        kategori_ad\u0131_2 TEXT,\n                        strateji TEXT,\n                        skor REAL,\n                        tarih DATETIME,\n                        PRIMARY KEY (kategori_ad\u0131_1, kategori_ad\u0131_2, strateji)\n                    )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "kategori_ad\u0131_1",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "kategori_ad\u0131_2",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 2
+      },
+      {
+        "id": 2,
+        "name": "strateji",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 3
+      },
+      {
+        "id": 3,
+        "name": "skor",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "tarih",
+        "type": "DATETIME",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "MusteriDetayOzet": {
+    "sql": "CREATE TABLE MusteriDetayOzet (\n            MusteriID INTEGER PRIMARY KEY,\n            AdSoyad TEXT,\n            Email TEXT,\n            Telefon TEXT,\n            Sehir TEXT,\n            KayitTarihi DATE,\n            RFM_Segment TEXT,\n            R_Score INTEGER,\n            F_Score INTEGER,\n            M_Score INTEGER,\n            FavoriKategori TEXT,\n            FavoriMarka TEXT,\n            FavoriMagaza TEXT,\n            FavoriUrun TEXT,\n            TercihEdilenSaat TEXT,\n            GunTercihi TEXT,\n            OrtalamaSiparisBuyuklugu REAL,\n            IlkAlisverisTarihi DATETIME,\n            SonAlisverisTarihi DATETIME,\n            MusteriYasiGun INTEGER,\n            ToplamAlisveris INTEGER,\n            ToplamHarcama REAL,\n            OrtalamaSepetTutari REAL,\n            Son30GunAlisveris INTEGER,\n            Son30GunHarcama REAL,\n            Son90GunAlisveris INTEGER,\n            Son90GunHarcama REAL,\n            Trend TEXT,\n            AktiviteDurumu TEXT,\n            ChurnRiskSkoru INTEGER,\n            LifetimeValueTahmini REAL,\n            SepetCesitlendirme INTEGER,\n            MarkaSadakati REAL,\n            Saat_Sabah INTEGER,\n            Saat_Ogle INTEGER,\n            Saat_Aksam INTEGER,\n            Saat_Gece INTEGER\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "MusteriID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "AdSoyad",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "Email",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "Telefon",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "Sehir",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "KayitTarihi",
+        "type": "DATE",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "RFM_Segment",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "R_Score",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 8,
+        "name": "F_Score",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 9,
+        "name": "M_Score",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 10,
+        "name": "FavoriKategori",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 11,
+        "name": "FavoriMarka",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 12,
+        "name": "FavoriMagaza",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 13,
+        "name": "FavoriUrun",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 14,
+        "name": "TercihEdilenSaat",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 15,
+        "name": "GunTercihi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 16,
+        "name": "OrtalamaSiparisBuyuklugu",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 17,
+        "name": "IlkAlisverisTarihi",
+        "type": "DATETIME",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 18,
+        "name": "SonAlisverisTarihi",
+        "type": "DATETIME",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 19,
+        "name": "MusteriYasiGun",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 20,
+        "name": "ToplamAlisveris",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 21,
+        "name": "ToplamHarcama",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 22,
+        "name": "OrtalamaSepetTutari",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 23,
+        "name": "Son30GunAlisveris",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 24,
+        "name": "Son30GunHarcama",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 25,
+        "name": "Son90GunAlisveris",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 26,
+        "name": "Son90GunHarcama",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 27,
+        "name": "Trend",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 28,
+        "name": "AktiviteDurumu",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 29,
+        "name": "ChurnRiskSkoru",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 30,
+        "name": "LifetimeValueTahmini",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 31,
+        "name": "SepetCesitlendirme",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 32,
+        "name": "MarkaSadakati",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 33,
+        "name": "Saat_Sabah",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 34,
+        "name": "Saat_Ogle",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 35,
+        "name": "Saat_Aksam",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 36,
+        "name": "Saat_Gece",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "OtomatikKampanyaOnerileri": {
+    "sql": "CREATE TABLE OtomatikKampanyaOnerileri (\n        OneriID INTEGER PRIMARY KEY AUTOINCREMENT,\n        OlusturmaTarihi TEXT,\n        KampanyaTipi TEXT, -- 'Cross-Sell', 'Bundle', 'Loyalty', 'Win-Back', 'Up-Sell', 'Clearance', 'New Product'\n        \n        -- HEDEF\n        HedefSegment TEXT,\n        HedefMusteriSayisi INTEGER,\n        OncelikSeviye INTEGER, -- 1-5 (1: En acil)\n        \n        -- \u00dcR\u00dcN/KATEGOR\u0130\n        UrunID INTEGER,\n        UrunAdi TEXT,\n        KategoriID INTEGER,\n        KategoriAdi TEXT,\n        IkinciUrunID INTEGER,\n        IkinciUrunAdi TEXT,\n        \n        -- VER\u0130 KAYNA\u011eI\n        VeriKaynagi TEXT,\n        \n        -- DETAYLAR\n        OnerilenIndirim REAL,\n        OnerilenMinTutar REAL,\n        GecerlilikSuresi INTEGER,\n        \n        -- TAHM\u0130N\n        TahminiKatilim INTEGER,\n        PotansiyelCiro REAL,\n        TahminiKar REAL,\n        ROITahmini REAL,\n        \n        -- GEREK\u00c7E\n        Gerekcesi TEXT,\n        VeriOzeti TEXT,\n        BeklenenSonuc TEXT,\n        \n        -- DURUM\n        OneriDurumu TEXT, -- 'Bekliyor', 'Onaylandi', 'Reddedildi', 'Uygulandi'\n        KampanyaID INTEGER,\n        SonGuncelleme TEXT\n    )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "OneriID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "OlusturmaTarihi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "KampanyaTipi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "HedefSegment",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "HedefMusteriSayisi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "OncelikSeviye",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "UrunID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "UrunAdi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 8,
+        "name": "KategoriID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 9,
+        "name": "KategoriAdi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 10,
+        "name": "IkinciUrunID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 11,
+        "name": "IkinciUrunAdi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 12,
+        "name": "VeriKaynagi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 13,
+        "name": "OnerilenIndirim",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 14,
+        "name": "OnerilenMinTutar",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 15,
+        "name": "GecerlilikSuresi",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 16,
+        "name": "TahminiKatilim",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 17,
+        "name": "PotansiyelCiro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 18,
+        "name": "TahminiKar",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 19,
+        "name": "ROITahmini",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 20,
+        "name": "Gerekcesi",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 21,
+        "name": "VeriOzeti",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 22,
+        "name": "BeklenenSonuc",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 23,
+        "name": "OneriDurumu",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 24,
+        "name": "KampanyaID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 25,
+        "name": "SonGuncelleme",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "BrandSummary": {
+    "sql": "CREATE TABLE BrandSummary (\n            brand_id INTEGER,\n            brand_name TEXT,\n            year INTEGER,\n            month INTEGER,\n            region TEXT,\n            customer_type TEXT,\n            segment TEXT,\n            approval_status TEXT,\n            category_id INTEGER,\n            category_main TEXT,\n            category_sub1 TEXT,\n            category_sub2 TEXT,\n            total_sales REAL,\n            total_units REAL,\n            customer_count INTEGER,\n            brand_name_norm TEXT,\n            region_norm TEXT,\n            customer_type_norm TEXT,\n            approval_status_norm TEXT,\n            segment_norm TEXT,\n            category_norm TEXT,\n            category_sub1_norm TEXT,\n            category_sub2_norm TEXT\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "brand_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 1,
+        "name": "brand_name",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 2,
+        "name": "year",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 3,
+        "name": "month",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 4,
+        "name": "region",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "customer_type",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "segment",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "approval_status",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 8,
+        "name": "category_id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 9,
+        "name": "category_main",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 10,
+        "name": "category_sub1",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 11,
+        "name": "category_sub2",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 12,
+        "name": "total_sales",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 13,
+        "name": "total_units",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 14,
+        "name": "customer_count",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 15,
+        "name": "brand_name_norm",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 16,
+        "name": "region_norm",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 17,
+        "name": "customer_type_norm",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 18,
+        "name": "approval_status_norm",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 19,
+        "name": "segment_norm",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 20,
+        "name": "category_norm",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 21,
+        "name": "category_sub1_norm",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 22,
+        "name": "category_sub2_norm",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ]
+  },
+  "EnCokSatanlar": {
+    "sql": "CREATE TABLE EnCokSatanlar (\n            donem_tipi TEXT NOT NULL, -- 'GLOBAL', 'YIL', 'AY'\n            donem_degeri TEXT NOT NULL, -- 'ALL', '2026', '2026-01'\n            \n            grup_tipi TEXT NOT NULL,    -- 'GENEL', 'KATEGORI', 'MARKA'\n            grup_degeri TEXT NOT NULL,  -- 'ALL', 'G\u0131da', '\u00dclker'\n            \n            urun_ad TEXT,\n            toplam_ciro REAL DEFAULT 0,\n            toplam_adet REAL DEFAULT 0,\n            \n            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,\n            PRIMARY KEY (donem_tipi, donem_degeri, grup_tipi, grup_degeri)\n        )",
+    "columns": [
+      {
+        "id": 0,
+        "name": "donem_tipi",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "id": 1,
+        "name": "donem_degeri",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 2
+      },
+      {
+        "id": 2,
+        "name": "grup_tipi",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 3
+      },
+      {
+        "id": 3,
+        "name": "grup_degeri",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 4
+      },
+      {
+        "id": 4,
+        "name": "urun_ad",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "id": 5,
+        "name": "toplam_ciro",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 6,
+        "name": "toplam_adet",
+        "type": "REAL",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "id": 7,
+        "name": "updated_at",
+        "type": "DATETIME",
+        "notnull": 0,
+        "dflt_value": "CURRENT_TIMESTAMP",
+        "pk": 0
+      }
+    ]
+  }
+}

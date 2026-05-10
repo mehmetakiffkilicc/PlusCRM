@@ -1,0 +1,13 @@
+# VS Code'un indexlemesini engellemek için
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+dist/
+build/
+*.csv
+*.db
+*.sqlite3
+package-lock.json
+.git/
+uploads/

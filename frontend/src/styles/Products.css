@@ -1,0 +1,142 @@
+.products-page {
+  padding: 20px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.products-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.hierarchy-tree {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.tree-container {
+  margin-top: 16px;
+}
+
+.tree-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.tree-item:hover {
+  background-color: #f3f4f6;
+}
+
+.brand-item {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.category-item {
+  margin-left: 24px;
+  color: #4b5563;
+}
+
+.expand-icon {
+  margin-right: 8px;
+  font-size: 0.8em;
+  color: #9ca3af;
+  width: 16px;
+}
+
+.item-count {
+  margin-left: auto;
+  font-size: 0.85em;
+  color: #9ca3af;
+  background: #f3f4f6;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.tree-products {
+  margin-left: 48px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.products-table th {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 2px solid #e5e7eb;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.products-table td {
+  padding: 8px;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+}
+
+.analytics-charts-side {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.bar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bar-label {
+  width: 100px;
+  font-size: 0.9em;
+  color: #4b5563;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bar-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  height: 24px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: #6366f1;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.bar-value {
+  font-size: 0.85em;
+  color: #6b7280;
+  padding-right: 8px;
+}

@@ -1,0 +1,179 @@
+/* ============================================================
+   XPlusCRM — Shared Analytics Page Layout
+   Used by: KohortAnalizi, UrunBirliktelik, EnflasyonProfil,
+            RakipRiski, HaneAnalizi, MarkaSadakati
+   ============================================================ */
+
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Page Wrapper ── */
+.page-content {
+  padding: 24px;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: pageFadeIn 0.35s ease;
+}
+
+/* ── Filter row (controls without title) ── */
+.page-filter-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ── KPI Summary Grid ── */
+.kpi-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+/* ── Gradient KPI Card ── */
+.kpi-gradient-card {
+  border-radius: 16px;
+  padding: 24px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.kpi-gradient-card .kpi-card-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 8px;
+}
+
+.kpi-gradient-card .kpi-card-value {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.kpi-gradient-card .kpi-card-sub {
+  font-size: 0.78rem;
+  opacity: 0.75;
+  margin-top: 6px;
+}
+
+.kpi-gradient-card .kpi-card-icon {
+  position: absolute;
+  right: -14px;
+  bottom: -14px;
+  color: white;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* Gradient color variants */
+.kpi-gradient-indigo {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.3);
+}
+.kpi-gradient-green {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.3);
+}
+.kpi-gradient-amber {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.3);
+}
+.kpi-gradient-red {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.3);
+}
+.kpi-gradient-orange {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.3);
+}
+.kpi-gradient-teal {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  box-shadow: 0 10px 25px -5px rgba(20, 184, 166, 0.3);
+}
+.kpi-gradient-violet {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.3);
+}
+.kpi-gradient-pink {
+  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+  box-shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.3);
+}
+.kpi-gradient-slate {
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  box-shadow: 0 10px 25px -5px rgba(100, 116, 139, 0.25);
+}
+
+/* ── Section Card (for charts and content panels) ── */
+.section-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+.section-card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Section Card without padding (for tables) ── */
+.section-card-table {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+/* ── Accent header bar inside table section card ── */
+.section-card-table-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* ── Empty/Error State ── */
+.page-empty-state {
+  background: white;
+  border-radius: 16px;
+  padding: 60px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .page-content { padding: 16px; }
+  .kpi-gradient-card .kpi-card-value { font-size: 1.5rem; }
+  .kpi-summary-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .kpi-summary-grid { grid-template-columns: 1fr; }
+}

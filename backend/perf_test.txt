@@ -1,0 +1,4 @@
+Testing direct SQL queries on DB Backend: postgresql
+COUNT WITH JOIN: 0.2192 seconds (Total: 182929)
+COUNT WITHOUT JOIN (Optimized): 0.2177 seconds (Total: 182929)
+MAIN FULL JOIN QUERY (Default Sort): 0.2711 seconds (Fetched 10 rows)

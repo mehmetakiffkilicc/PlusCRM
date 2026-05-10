@@ -1,0 +1,71 @@
+@echo off
+echo ============================================
+echo  Sync Scheduler Windows Service Installer
+echo ============================================
+echo.
+
+REM Check for admin rights
+net session >nul 2>&1
+if %errorLevel% neq 0 (
+    echo [HATA] Bu script Administrator olarak calistirilmali!
+    echo Sag tikla ve "Run as administrator" sec.
+    pause
+    exit /b 1
+)
+
+REM Python path
+set PYTHON_PATH=C:\Python313\python.exe
+set SCRIPT_PATH=C:\Users\Akif\Desktop\BackendFronend\sync_worker\scheduler_service.py
+set SERVICE_NAME=SyncSchedulerService
+
+echo Python: %PYTHON_PATH%
+echo Script: %SCRIPT_PATH%
+echo Service: %SERVICE_NAME%
+echo.
+
+REM Install NSSM if not exists
+if not exist "C:\nssm\nssm.exe" (
+    echo NSSM bulunamadi. Lutfen https://nssm.cc/download adresinden indirin
+    echo ve C:\nssm\ klasorune kopyalayin.
+    pause
+    exit /b 1
+)
+
+REM Remove existing service if exists
+echo Eski servis kontrol ediliyor...
+C:\nssm\nssm.exe stop %SERVICE_NAME% >nul 2>&1
+C:\nssm\nssm.exe remove %SERVICE_NAME% confirm >nul 2>&1
+
+REM Install new service
+echo Yeni servis kuruluyor...
+C:\nssm\nssm.exe install %SERVICE_NAME% %PYTHON_PATH% %SCRIPT_PATH%
+
+REM Configure service
+C:\nssm\nssm.exe set %SERVICE_NAME% AppDirectory C:\Users\Akif\Desktop\BackendFronend\sync_worker
+C:\nssm\nssm.exe set %SERVICE_NAME% DisplayName "Sync Scheduler Service"
+C:\nssm\nssm.exe set %SERVICE_NAME% Description "SQLite-SQL Server senkronizasyon zamanlayicisi"
+C:\nssm\nssm.exe set %SERVICE_NAME% Start SERVICE_AUTO_START
+C:\nssm\nssm.exe set %SERVICE_NAME% AppStdout C:\Users\Akif\Desktop\BackendFronend\sync_worker\service_stdout.log
+C:\nssm\nssm.exe set %SERVICE_NAME% AppStderr C:\Users\Akif\Desktop\BackendFronend\sync_worker\service_stderr.log
+C:\nssm\nssm.exe set %SERVICE_NAME% AppRotateFiles 1
+C:\nssm\nssm.exe set %SERVICE_NAME% AppRotateBytes 10485760
+
+REM Start service
+echo Servis baslatiliyor...
+C:\nssm\nssm.exe start %SERVICE_NAME%
+
+echo.
+echo ============================================
+echo  Kurulum tamamlandi!
+echo ============================================
+echo.
+echo Servis durumunu kontrol etmek icin:
+echo   sc query %SERVICE_NAME%
+echo.
+echo Servisi durdurmak icin:
+echo   net stop %SERVICE_NAME%
+echo.
+echo Servisi baslatmak icin:
+echo   net start %SERVICE_NAME%
+echo.
+pause

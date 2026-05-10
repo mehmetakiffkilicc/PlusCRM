@@ -1,0 +1,40 @@
+@echo off
+echo ==========================================
+echo  Sync Scheduler Guncelleme ve Yapilandirma
+echo ==========================================
+echo.
+echo Yonetici izinleri kontrol ediliyor...
+net session >nul 2>&1
+if %errorLevel% neq 0 (
+    echo [HATA] Bu script Administrator olarak calistirilmali!
+    echo Lutfen sag tiklayip "Yonetici olarak calistir" secenegini kullanin.
+    pause
+    exit /b 1
+)
+
+echo.
+echo 1. Eski servis/zamanlayici durduruluyor...
+schtasks /end /tn "SyncSchedulerService" >nul 2>&1
+schtasks /delete /tn "SyncSchedulerService" /f >nul 2>&1
+
+echo.
+echo 2. Yeni zamanlayici olusturuluyor (Sistem baslangicinda otomatik calisir)...
+schtasks /create /tn "SyncSchedulerService" /tr "c:\Users\Akif\Desktop\BackendFronend\sync_worker\start_scheduler.bat" /sc onlogon /rl HIGHEST /f
+
+if %errorLevel% neq 0 (
+    echo [HATA] Zamanlayici olusturulamadi.
+    pause
+    exit /b 1
+)
+
+echo.
+echo 3. Servis baslatiliyor...
+schtasks /run /tn "SyncSchedulerService"
+
+echo.
+echo ==========================================
+echo  ISLEM BASARIYLA TAMAMLANDI!
+echo  Check etmek icin Task Scheduler'a bakabilirsiniz.
+echo ==========================================
+echo.
+pause

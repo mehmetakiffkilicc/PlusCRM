@@ -1,0 +1,13 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+healthcheckPath = "/health/"
+healthcheckTimeout = 120
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+# Memory-related env vars (Railway dashboard'da da ayarlanabilir)
+# WEB_CONCURRENCY=2 → 2 Gunicorn worker (daha az RAM)
+# MALLOC_MMAP_THRESHOLD_=131072 → start.sh içinde set ediliyor

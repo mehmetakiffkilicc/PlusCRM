@@ -1,0 +1,13 @@
+__pycache__
+*.pyc
+.git
+.gitignore
+.env
+.env.local
+.env.*.local
+*.md
+staticfiles
+logs
+_archive
+scripts
+scratch

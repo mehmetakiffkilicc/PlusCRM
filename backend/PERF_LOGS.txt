@@ -1,0 +1,18 @@
+PERF: Fast path KPI (gunlukciroozet) took 0.2075s
+PERF: Extra KPIs (Customers, Churn, Loyalty) took 1.0343s
+PERF: Total get_dashboard_kpis took 1.8629s
+PERF: Cache fetch (all) took 0.2088s
+PERF: Fast path KPI (gunlukciroozet) took 0.2074s
+PERF: Extra KPIs (Memory) took 0.0000s
+PERF: Total get_dashboard_kpis took 0.8323s
+------------------------------
+PERF: Cache fetch (all) took 0.2146s
+PERF: Fast path KPI (gunlukciroozet) took 0.2170s
+PERF: Extra KPIs (Memory) took 0.0000s
+PERF: Total get_dashboard_kpis took 2.3671s
+------------------------------
+PERF: Cache fetch (all) took 0.2096s
+PERF: Fast path KPI (gunlukciroozet) took 0.2101s
+PERF: Extra KPIs (Memory) took 0.0000s
+PERF: Total get_dashboard_kpis took 0.8382s
+------------------------------

@@ -1,0 +1,13 @@
+# Ensure shell scripts always use LF line endings (critical for Linux containers)
+*.sh text eol=lf
+
+# Python files — LF
+*.py text eol=lf
+
+# Config files — LF
+*.toml text eol=lf
+*.cfg text eol=lf
+*.ini text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+Dockerfile text eol=lf

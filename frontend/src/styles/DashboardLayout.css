@@ -1,0 +1,444 @@
+/* ============================================
+   XPlusCRM Dashboard Layout — Modern Dark Sidebar
+   ============================================ */
+
+/* Container */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--app-bg, #f8fafc);
+}
+
+/* ── Sidebar ── */
+.dashboard-sidebar {
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  border-right: 1px solid rgba(51, 65, 85, 0.6);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 20;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+.dashboard-sidebar.open  { width: 264px; }
+.dashboard-sidebar.closed { width: 72px; }
+
+/* ── Sidebar Header ── */
+.sidebar-header {
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+  flex-shrink: 0;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  letter-spacing: 0.3px;
+}
+
+.logo-icon {
+  min-width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+  flex-shrink: 0;
+}
+
+.logo-text {
+  background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.toggle-sidebar {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.toggle-sidebar:hover {
+  background-color: rgba(51, 65, 85, 0.5);
+  color: #e2e8f0;
+}
+
+/* ── Navigation ── */
+.sidebar-nav {
+  flex: 1;
+  padding: 8px 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sidebar-nav::-webkit-scrollbar { width: 4px; }
+.sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.5);
+  border-radius: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.8);
+}
+
+/* ── Mantine NavLink — dark sidebar overrides ──────────────────────────────
+   Mantine NavLink uses --nl-color / --nl-hover / --nl-bg CSS variables and
+   also applies background via [data-hovered] / :hover selectors.
+   We override ALL paths here so no white flash appears on hover.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.sidebar-nav-link,
+.sidebar-nav-link-sub,
+.group-header {
+  /* Override Mantine's internal CSS vars */
+  --nl-color: #94a3b8 !important;
+  --nl-hover: rgba(51, 65, 85, 0.55) !important;
+  --nl-bg:    transparent !important;
+
+  border-radius: 8px !important;
+  padding: 7px 10px !important;
+  color: #94a3b8 !important;
+  background: transparent !important;
+  width: 100% !important;
+  font-size: 0.8rem !important;
+  transition: background 0.15s ease, color 0.15s ease !important;
+}
+
+/* Group header labels slightly brighter */
+.group-header {
+  --nl-color: #cbd5e1 !important;
+  color: #cbd5e1 !important;
+}
+
+/* Hover — all mechanisms Mantine might use */
+.sidebar-nav-link:hover,
+.sidebar-nav-link-sub:hover,
+.group-header:hover,
+.sidebar-nav-link[data-hovered],
+.sidebar-nav-link-sub[data-hovered],
+.group-header[data-hovered] {
+  background: rgba(51, 65, 85, 0.55) !important;
+  color: #f1f5f9 !important;
+}
+
+/* Active — indigo gradient */
+.sidebar-nav-link[data-active],
+.sidebar-nav-link-sub[data-active] {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35) !important;
+}
+
+/* Pass color down to every inner Mantine span (icon, label, chevron) */
+.sidebar-nav-link *,
+.sidebar-nav-link-sub *,
+.group-header * {
+  color: inherit !important;
+}
+
+/* Label typography */
+.sidebar-nav-label,
+.sidebar-nav-label-sub,
+.sidebar-nav-label-group {
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+}
+
+.sidebar-nav-link[data-active] .sidebar-nav-label,
+.sidebar-nav-link-sub[data-active] .sidebar-nav-label-sub {
+  font-weight: 600 !important;
+}
+
+.sidebar-nav-section {
+  color: inherit !important;
+}
+
+/* Icon-only mode when sidebar is closed */
+.dashboard-sidebar.closed .sidebar-nav-link {
+  justify-content: center !important;
+  padding: 10px !important;
+}
+
+.nav-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(71, 85, 105, 0.5) 50%, transparent 100%);
+  margin: 8px 6px;
+}
+
+/* ── Sidebar Scroll Indicator ── */
+.sidebar-scroll-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 0;
+  margin-top: -32px;
+  height: 32px;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.85) 60%, rgba(15, 23, 42, 0.95) 100%);
+  color: #94a3b8;
+  cursor: pointer;
+  z-index: 10;
+  transition: color 0.2s;
+}
+
+.sidebar-scroll-indicator:hover {
+  color: #e2e8f0;
+}
+
+.pulsing-arrow {
+  animation: pulse-down 2s infinite ease-in-out;
+}
+
+@keyframes pulse-down {
+  0% { transform: translateY(-2px); opacity: 0.4; }
+  50% { transform: translateY(2px); opacity: 1; }
+  100% { transform: translateY(-2px); opacity: 0.4; }
+}
+
+/* ── Sidebar Footer / Profile ── */
+.sidebar-footer {
+  padding: 14px 12px;
+  border-top: 1px solid rgba(51, 65, 85, 0.5);
+  flex-shrink: 0;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  transition: background-color 0.2s;
+  cursor: default;
+}
+
+.user-profile:hover {
+  background-color: rgba(51, 65, 85, 0.4);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+  min-width: 0;
+  flex: 1;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #f87171;
+  font-size: 0.72rem;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  font-weight: 500;
+  transition: color 0.2s;
+  opacity: 0.8;
+  font-family: inherit;
+}
+
+.logout-btn:hover {
+  color: #fca5a5;
+  opacity: 1;
+}
+
+/* ── AI Sidebar Trigger (Premium) ── */
+.ai-sidebar-trigger {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-sidebar-trigger:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+  border-color: rgba(139, 92, 246, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+}
+
+.ai-sidebar-trigger.collapsed {
+  justify-content: center;
+  padding: 12px 0;
+  width: 48px;
+  margin: 0 auto 12px auto;
+}
+
+.ai-trigger-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  border-radius: 8px;
+  color: white;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+  flex-shrink: 0;
+  animation: ai-glow 3s infinite ease-in-out;
+}
+
+.ai-trigger-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.ai-trigger-text div:first-child {
+  color: #f1f5f9;
+}
+
+.ai-trigger-indicator {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 6px;
+  height: 6px;
+  background-color: #8b5cf6;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #8b5cf6;
+}
+
+@keyframes ai-glow {
+  0% { box-shadow: 0 0 5px rgba(99, 102, 241, 0.4); }
+  50% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.8); }
+  100% { box-shadow: 0 0 5px rgba(99, 102, 241, 0.4); }
+}
+
+/* ── Main Content Area ── */
+.dashboard-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--app-bg, #f8fafc);
+}
+
+/* ── Header — Page Title + Filters ── */
+.dashboard-header {
+  min-height: 64px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  padding: 8px 24px;
+  gap: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.header-title-area {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex-shrink: 0;
+  min-width: 150px;
+  padding-right: 16px;
+  border-right: 1px solid #e2e8f0;
+}
+
+.header-filter-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  overflow: visible;
+  min-width: 0;
+}
+
+/* ── Scrollable Content ── */
+.dashboard-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ── Mobile Overlay Backdrop ── */
+.mobile-sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 49;
+}
+
+/* ── Mobile Hamburger Button ── */
+.mobile-hamburger {
+  background: transparent;
+  border: none;
+  color: #0f172a;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.mobile-hamburger:hover {
+  background: #f1f5f9;
+}
+
+/* ── Mobile/Tablet Responsive ── */
+@media (max-width: 1023px) {
+  .dashboard-sidebar.mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 50;
+  }
+
+  .dashboard-sidebar.mobile.closed {
+    width: 0;
+    border: none;
+    box-shadow: none;
+    overflow: hidden;
+  }
+
+  .dashboard-sidebar.mobile.open {
+    width: 264px;
+  }
+
+  .header-title-area {
+    display: none;
+  }
+}

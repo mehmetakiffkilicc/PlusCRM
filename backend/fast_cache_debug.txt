@@ -1,0 +1,12 @@
+EXCEPTION: Traceback (most recent call last):
+  File "C:\Users\Akif\Desktop\BackendFronend\backend\api\analytics\product_portal_view.py", line 141, in get_product_portal
+    t_cache_start = _time.time()
+                    ^^^^^
+NameError: name '_time' is not defined
+
+EXCEPTION: Traceback (most recent call last):
+  File "C:\Users\Akif\Desktop\BackendFronend\backend\api\analytics\product_portal_view.py", line 141, in get_product_portal
+    t_cache_start = _time.time()
+                    ^^^^^
+NameError: name '_time' is not defined
+

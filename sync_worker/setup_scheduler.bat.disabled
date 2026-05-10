@@ -1,0 +1,73 @@
+@echo off
+echo ============================================
+echo  Sync Scheduler - Task Scheduler Setup
+echo ============================================
+echo.
+echo Bu script Administrator olarak calistirilmali\!
+echo.
+
+REM Create XML for task
+(
+echo ^<?xml version="1.0" encoding="UTF-16"?^>
+echo ^<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task"^>
+echo   ^<Triggers^>
+echo     ^<LogonTrigger^>
+echo       ^<Enabled^>true^</Enabled^>
+echo     ^</LogonTrigger^>
+echo   ^</Triggers^>
+echo   ^<Principals^>
+echo     ^<Principal id="Author"^>
+echo       ^<LogonType^>S4U^</LogonType^>
+echo       ^<RunLevel^>HighestAvailable^</RunLevel^>
+echo     ^</Principal^>
+echo   ^</Principals^>
+echo   ^<Settings^>
+echo     ^<MultipleInstancesPolicy^>IgnoreNew^</MultipleInstancesPolicy^>
+echo     ^<DisallowStartIfOnBatteries^>false^</DisallowStartIfOnBatteries^>
+echo     ^<StopIfGoingOnBatteries^>false^</StopIfGoingOnBatteries^>
+echo     ^<AllowHardTerminate^>true^</AllowHardTerminate^>
+echo     ^<StartWhenAvailable^>true^</StartWhenAvailable^>
+echo     ^<RunOnlyIfNetworkAvailable^>false^</RunOnlyIfNetworkAvailable^>
+echo     ^<AllowStartOnDemand^>true^</AllowStartOnDemand^>
+echo     ^<Enabled^>true^</Enabled^>
+echo     ^<Hidden^>true^</Hidden^>
+echo     ^<RunOnlyIfIdle^>false^</RunOnlyIfIdle^>
+echo     ^<WakeToRun^>false^</WakeToRun^>
+echo     ^<ExecutionTimeLimit^>PT0S^</ExecutionTimeLimit^>
+echo     ^<Priority^>7^</Priority^>
+echo     ^<RestartOnFailure^>
+echo       ^<Interval^>PT1M^</Interval^>
+echo       ^<Count^>3^</Count^>
+echo     ^</RestartOnFailure^>
+echo   ^</Settings^>
+echo   ^<Actions Context="Author"^>
+echo     ^<Exec^>
+echo       ^<Command^>c:\Users\Akif\Desktop\BackendFronend\sync_worker\start_scheduler.bat^</Command^>
+echo       ^<WorkingDirectory^>c:\Users\Akif\Desktop\BackendFronend\sync_worker^</WorkingDirectory^>
+echo     ^</Exec^>
+echo   ^</Actions^>
+echo ^</Task^>
+) > "%TEMP%\SyncSchedulerTask.xml"
+
+REM Delete existing task
+schtasks /delete /tn "SyncSchedulerService" /f 2>nul
+
+REM Create new task
+schtasks /create /tn "SyncSchedulerService" /xml "%TEMP%\SyncSchedulerTask.xml"
+
+if %errorlevel% equ 0 (
+    echo.
+    echo [BASARILI] Task olusturuldu\!
+    echo.
+    REM Start the task
+    schtasks /run /tn "SyncSchedulerService"
+    echo Task baslatildi.
+) else (
+    echo.
+    echo [HATA] Task olusturulamadi\!
+)
+
+echo.
+echo Task durumunu gormek icin: schtasks /query /tn "SyncSchedulerService"
+echo.
+pause
