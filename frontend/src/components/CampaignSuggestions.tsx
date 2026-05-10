@@ -539,7 +539,7 @@ export default function CampaignSuggestions() {
       setExportStep('Müşteri verileri sorgulanıyor...')
       startProgress(80, 50000)
 
-      const apiBase = (window as any).__API_BASE__ || 'https://api.xpluscrm.com'
+      const apiBase = (window as any).__API_BASE__ || 'https://api.MarketFlow.com'
       const downloadUrl = `${apiBase}/api/kampanya-onerileri/disa-aktar/?ids=${ids.join(',')}`
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 90000) // 90s timeout
@@ -683,7 +683,31 @@ export default function CampaignSuggestions() {
   const displayGroups = Object.values(groupedRecommendations);
 
   return (
-    <div style={{ padding: '24px', background: '#f8fafc', minHeight: '100vh' }}>
+    <div style={{ padding: '24px', background: '#f8fafc', minHeight: '100vh', position: 'relative' }}>
+      {/* Demo Mode Watermark */}
+      <div style={{
+        position: 'fixed',
+        bottom: '30px',
+        right: '30px',
+        background: 'rgba(99, 102, 241, 0.08)',
+        color: '#6366f1',
+        padding: '8px 16px',
+        borderRadius: '20px',
+        fontSize: '0.75rem',
+        fontWeight: 700,
+        letterSpacing: '0.05em',
+        border: '1px solid rgba(99, 102, 241, 0.2)',
+        backdropFilter: 'blur(4px)',
+        zIndex: 9999,
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
+      }}>
+        <IconSparkles size={14} />
+        DEMO MODE
+      </div>
       <style>{`
         @keyframes slideDown {
           from { opacity: 0; transform: translateY(-10px); }
@@ -2687,3 +2711,4 @@ export default function CampaignSuggestions() {
     </div>
   )
 }
+

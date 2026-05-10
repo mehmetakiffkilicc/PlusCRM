@@ -604,11 +604,11 @@ def get_product_portal(request, data_source_id, product_id):
             # OVERRIDE with fresh data from PDS if available
             # NOTE: PDS only maintains ~7 days of daily data (nightly sync LIMIT 7).
             # Only override s7 values from PDS; s30/s90 stay from UPDF/satislar.
+            # OVERRIDE with fresh data from PDS if available
+            # NOTE: PDS only maintains ~7 days of daily data (nightly sync LIMIT 7).
+            # Only override s7 values from PDS; s30/s90 stay from UPDF/satislar.
             if use_pds:
-                if db_engine.DB_BACKEND == 'postgresql':
-                    date7 = "CURRENT_DATE - INTERVAL '7 days'"
-                else:
-                    date7 = "date('now', '-7 days')"
+                date7 = db_engine.date_offset_expr(-7)
                 cursor.execute(f"""
                     SELECT
                         SUM(CASE WHEN tarih >= {date7} THEN unit_count ELSE 0 END) as s7_units,
@@ -630,14 +630,9 @@ def get_product_portal(request, data_source_id, product_id):
 
             # Fallback: PDS/UPDF bos ise satislar'dan canli sorgu
             if not performance.get('Son7GunSatis') or not performance.get('Son7GunCiro') or not performance.get('Son30GunSatis') or not performance.get('Son30GunCiro'):
-                if db_engine.DB_BACKEND == 'postgresql':
-                    date7 = "CURRENT_DATE - INTERVAL '7 days'"
-                    date30 = "CURRENT_DATE - INTERVAL '30 days'"
-                    date90 = "CURRENT_DATE - INTERVAL '90 days'"
-                else:
-                    date7 = "date('now', '-7 days')"
-                    date30 = "date('now', '-30 days')"
-                    date90 = "date('now', '-90 days')"
+                date7 = db_engine.date_offset_expr(-7)
+                date30 = db_engine.date_offset_expr(-30)
+                date90 = db_engine.date_offset_expr(-90)
                 cursor.execute(f"""
                     SELECT
                         COALESCE(SUM(CASE WHEN s.tarih >= {date7} THEN s.miktar ELSE 0 END), 0) as s7_units,

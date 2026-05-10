@@ -723,6 +723,20 @@ export default function DashboardHome() {
           </div>
         </div>
       )}
+
+      {/* Persistent Demo Footer */}
+      <div style={{ 
+        marginTop: 'auto', 
+        padding: '24px 0 12px 0', 
+        borderTop: '1px solid var(--mantine-color-gray-2)',
+        textAlign: 'center',
+        opacity: 0.6
+      }}>
+        <MantineText size="xs" c="dimmed" fw={500}>
+          MarketFlow Demo Mode • Developed by Akif • © 2024
+        </MantineText>
+      </div>
     </div>
   )
 }
+

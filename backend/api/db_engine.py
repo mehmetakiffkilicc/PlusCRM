@@ -27,7 +27,7 @@ DB_BACKEND = config("DB_BACKEND", default=_default_backend).split('#')[0].strip(
 DB_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
     'database',
-    'sales_cache.db'
+    'demo.sqlite3'
 )
 
 # PostgreSQL Connection Pool
@@ -245,6 +245,52 @@ def date_expr(column):
     if DB_BACKEND == 'postgresql':
         return f"{column}::date"
     return f"date({column})"
+
+def last_year_expr(column=None):
+    """Return expression for 'last 365 days' relative to column or CURRENT_DATE."""
+    return date_offset_expr(-365, column)
+
+def date_offset_expr(days, column=None):
+    """Return expression for 'column + days' or 'CURRENT_DATE + days'."""
+    if DB_BACKEND == 'postgresql':
+        base = column if column else "CURRENT_DATE"
+        if days >= 0:
+            return f"{base} + INTERVAL '{days} days'"
+        else:
+            return f"{base} - INTERVAL '{abs(days)} days'"
+    else:
+        base = column if column else "'now'"
+        return f"date({base}, '{days:+} days')"
+
+def col_date_add_expr(date_col, interval_col, multiplier=1):
+    """Return expression for 'date_col + interval_col * multiplier days'."""
+    if DB_BACKEND == 'postgresql':
+        return f"({date_col} + ({interval_col} * {multiplier} || ' days')::interval)"
+    else:
+        # SQLite: date(col, '+' || ROUND(val * mult) || ' days')
+        return f"date({date_col}, '+' || ROUND({interval_col} * {multiplier}) || ' days')"
+
+def date_diff_days_expr(date1, date2):
+    """Return expression for 'date1 - date2' in days."""
+    if DB_BACKEND == 'postgresql':
+        return f"({date1}::date - {date2}::date)"
+    else:
+        return f"(julianday({date1}) - julianday({date2}))"
+
+def date_trunc_expr(unit, column):
+    """Return correct date truncation syntax for current backend."""
+    if DB_BACKEND == 'postgresql':
+        return f"date_trunc('{unit}', {column})::date"
+    else:
+        if unit == 'week':
+            # SQLite: Monday of the current week
+            return f"date({column}, 'weekday 1', '-7 days')"
+        elif unit == 'month':
+            # SQLite: 1st of the month
+            return f"date({column}, 'start of month')"
+        elif unit == 'year':
+            return f"date({column}, 'start of year')"
+        return f"date({column})"
 
 def insert_or_replace():
     """Return the correct upsert syntax prefix."""

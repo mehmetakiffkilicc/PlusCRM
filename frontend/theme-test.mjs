@@ -11,7 +11,7 @@ import { chromium } from 'playwright';
   page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); });
 
   // 1. Login
-  await page.goto('https://show.xpluscrm.com/giris');
+  await page.goto('https://show.MarketFlow.com/giris');
   await page.waitForTimeout(2000);
   await page.fill('input[type="email"], input[name="email"], input[placeholder*="mail"]', 'makif4596@gmail.com');
   await page.fill('input[type="password"], input[name="password"]', 'Test1234');
@@ -19,7 +19,7 @@ import { chromium } from 'playwright';
   await page.waitForTimeout(3000);
   
   // 2. Dashboard - BEFORE theme switch
-  await page.goto('https://show.xpluscrm.com/');
+  await page.goto('https://show.MarketFlow.com/');
   await page.waitForTimeout(3000);
   
   // Get data-theme
@@ -60,7 +60,7 @@ import { chromium } from 'playwright';
   console.log('Chart styles:', JSON.stringify(chartStyles, null, 2));
   
   // 3. Go to Settings and switch theme
-  await page.goto('https://show.xpluscrm.com/ayarlar');
+  await page.goto('https://show.MarketFlow.com/ayarlar');
   await page.waitForTimeout(2000);
   
   // Click MarketCRM theme card
@@ -73,7 +73,7 @@ import { chromium } from 'playwright';
   console.log('data-theme:', dataThemeAfter);
   
   // 4. Back to Dashboard
-  await page.goto('https://show.xpluscrm.com/');
+  await page.goto('https://show.MarketFlow.com/');
   await page.waitForTimeout(3000);
   
   // Get KPI styles again
@@ -115,3 +115,4 @@ import { chromium } from 'playwright';
   
   await browser.close();
 })();
+

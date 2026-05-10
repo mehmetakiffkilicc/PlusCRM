@@ -1,6 +1,6 @@
 # Dashboard Test Raporu v2 (Filtre Odaklı)
 **Tarih:** 2026-04-29  
-**Test URL:** https://show.xpluscrm.com/  
+**Test URL:** https://show.MarketFlow.com/  
 **Test Hesabı:** makif4596@gmail.com
 
 ---
@@ -184,3 +184,4 @@ sahte_filtre = TRUE
 
 **Bug Sayısı:** 1 CRITICAL + 3 HIGH + 1 MEDIUM + 1 HIGH (önceki) = **1 CRITICAL + 4 HIGH + 1 MEDIUM**  
 **Genel Durum:** ❌ Kritik sorunlar var
+

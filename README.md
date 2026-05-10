@@ -1,8 +1,8 @@
-# 🚀 xPlusCRM: Next-Generation AI-Powered Customer Relationship Management
+# 🚀 MarketFlow: Next-Generation AI-Powered Customer Relationship Management
 
-Welcome to **xPlusCRM**, a state-of-the-art, data-driven CRM dashboard application. This project demonstrates a full-stack, enterprise-grade application featuring advanced product analytics, customer segmentation, and AI-driven campaign recommendations. 
+Welcome to **MarketFlow**, a state-of-the-art, data-driven CRM dashboard application. This project demonstrates a full-stack, enterprise-grade application featuring advanced product analytics, customer segmentation, and AI-driven campaign recommendations. 
 
-*Note: This repository contains an anonymized version of the project created for portfolio and demonstration purposes. Real customer data and sensitive credentials have been removed or replaced with mock structures.*
+*Note: This repository contains an anonymized version of the project created for demonstration purposes. Real customer data and sensitive credentials have been removed or replaced with mock structures.*
 
 ## ✨ Key Features
 - **📊 Real-time Product Analytics**: Comprehensive insights into sales trends, category performance, and inventory health with sub-second query performance.
@@ -35,8 +35,8 @@ Welcome to **xPlusCRM**, a state-of-the-art, data-driven CRM dashboard applicati
 
 #### 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/xPlusCRM.git
-cd xPlusCRM
+git clone https://github.com/mehmetakiffkilicc/market_analitik.git
+cd market_analitik
 ```
 
 #### 2. Backend Setup
@@ -60,10 +60,11 @@ npm run dev
 The application will be available at `http://localhost:5173`.
 
 ## 📸 Screenshots
-*(Demonstrating UI and Layout)*
 
-![Dashboard Overview](https://via.placeholder.com/1000x500.png?text=Dashboard+Overview)
-![Customer Analysis](https://via.placeholder.com/1000x500.png?text=Customer+Analysis)
+![Dashboard Overview](screenshots/dashboard_overview.png)
+![Customer Analysis](screenshots/customer_segmentation.png)
+![Product Analytics](screenshots/product_analytics.png)
+![Campaign Recommendations](screenshots/campaign_recommendations.png)
 
 ## 🔒 Data Anonymization & Privacy
 This repository is a sanitized version of the original production application. 
@@ -72,4 +73,5 @@ This repository is a sanitized version of the original production application.
 - Certain proprietary AI models and internal business logic modules have been replaced with stubs to protect intellectual property.
 
 ## 📄 License
-This project is intended for portfolio and demonstration purposes. All rights reserved.
+This project is intended for demonstration purposes. All rights reserved.
+

@@ -1,6 +1,9 @@
 """
-CRM API Views
+MarketFlow Project - Demo Version
+Developed by Akif - © 2024
+All rights reserved. Unauthorized reproduction or use is prohibited.
 
+CRM API Views
 Server-side pagination, lazy loading ve on-demand veri yükleme
 destekleyen CRM API endpoint'leri.
 """
@@ -499,3 +502,4 @@ class ConnectionTestView(CRMBaseView):
                 'connected': False,
                 'error': str(e)
             }, status=HTTP_200_OK)
+

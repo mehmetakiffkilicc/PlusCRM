@@ -74,7 +74,7 @@ def get_kohort_analizi(request, data_source_id):
 
         cursor.execute(f"""
             SELECT md.musteri_id,
-                   TO_CHAR(md.ilk_alisveris_tarihi, 'YYYY-MM') as kohort_ay
+                   {db_engine.strftime_expr('%Y-%m', 'md.ilk_alisveris_tarihi')} as kohort_ay
             FROM musteridetayozet md
             {musteri_filter}
         """, musteri_params)
@@ -92,10 +92,10 @@ def get_kohort_analizi(request, data_source_id):
                 kohort_boyutlari[k] = kohort_boyutlari.get(k, 0) + 1
 
         cursor.execute("""
-            SELECT musteri_id, TO_CHAR(tarih, 'YYYY-MM') as alis_ay
+            SELECT musteri_id, {db_engine.strftime_expr('%Y-%m', 'tarih')} as alis_ay
             FROM satislar
             WHERE musteri_id IS NOT NULL AND tarih IS NOT NULL
-            GROUP BY musteri_id, TO_CHAR(tarih, 'YYYY-MM')
+            GROUP BY musteri_id, {db_engine.strftime_expr('%Y-%m', 'tarih')}
         """)
         kohort_aktivite = defaultdict(lambda: defaultdict(set))
         for r in cursor.fetchall():
@@ -306,7 +306,7 @@ def get_marka_sadakati(request, data_source_id):
 
         cursor.execute(f"""
             SELECT md.marka_adi as marka, COUNT(DISTINCT md.musteri_id) as musteri_sayisi,
-                   ROUND(AVG(md.toplam_harcama)::numeric, 0) as ort_musteri_harcama
+                   ROUND(AVG(md.toplam_harcama), 0) as ort_musteri_harcama
             FROM musterimarka_dagilimi md
             JOIN musteriler mu ON md.musteri_id = mu.id
             {musteri_where_ms}

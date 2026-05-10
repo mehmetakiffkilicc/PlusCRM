@@ -1,3 +1,9 @@
+/**
+ * MarketFlow Project - Demo Version
+ * Developed by Akif - © 2024
+ * All rights reserved. Unauthorized reproduction or use is prohibited.
+ */
+
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
 interface AuthResponse {
@@ -794,3 +800,4 @@ class ApiClient {
 }
 
 export default new ApiClient()
+

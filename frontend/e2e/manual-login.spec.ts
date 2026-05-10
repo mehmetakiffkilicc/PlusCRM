@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('Manuel Giriş ve AI Testi', async ({ page }) => {
-  // Show.xpluscrm.com'a git
+  // Show.MarketFlow.com'a git
   await page.goto('/');
   
   // Sayfanın yüklendiğini bekle
@@ -76,3 +76,4 @@ test('Manuel Giriş ve AI Testi', async ({ page }) => {
     console.log('Sayfa içeriği: page-content.html');
   }
 });
+

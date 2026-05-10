@@ -82,9 +82,9 @@ Düzeltmesi gereken 1-3 net madde.
 Tarayıcı testleri için **Playwright MCP** araçları kullanılır. Bu araçlar doğrudan mevcut konuşma bağlamında çalışır — ayrı bir test runner gerekmez.
 
 ### Ortam
-- **Frontend:** https://show.xpluscrm.com
-- **Backend API:** https://api.xpluscrm.com
-- **Login:** https://show.xpluscrm.com/giris
+- **Frontend:** https://show.MarketFlow.com
+- **Backend API:** https://api.MarketFlow.com
+- **Login:** https://show.MarketFlow.com/giris
 - **Test kullanıcısı:** makif4596@gmail.com / Test1234
 
 ### Kullanılabilir MCP Araçları
@@ -146,4 +146,5 @@ Console Hataları: [0 / N adet]
 - Görev önceliklendirmek (PM'in işi)
 - Hata bulunan kodu "geçer" olarak işaretlemek
 - Test yazmadan "test ettim" demek
-- show.xpluscrm.com yerine api.xpluscrm.com'u tarayıcıda açmak (backend URL'i tarayıcıya yazılmaz)
+- show.MarketFlow.com yerine api.MarketFlow.com'u tarayıcıda açmak (backend URL'i tarayıcıya yazılmaz)
+

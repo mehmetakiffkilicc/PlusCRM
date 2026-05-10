@@ -1,6 +1,6 @@
 # Kampanya Önerileri + AI Takvim Test Raporu
 **Tarih:** 2026-04-29  
-**URL:** https://show.xpluscrm.com/kampanya-onerileri
+**URL:** https://show.MarketFlow.com/kampanya-onerileri
 
 ---
 
@@ -63,3 +63,4 @@
 
 **Bug Sayısı:** 0  
 **Genel Durum:** ✅ Geçti
+

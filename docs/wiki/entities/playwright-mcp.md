@@ -45,7 +45,7 @@ npx playwright install chromium
 ## Test Yapısı
 
 - `e2e/` dizini: Test dosyaları
-- `playwright.config.ts`: Base URL `https://show.xpluscrm.com` (Canlı sunucu)
+- `playwright.config.ts`: Base URL `https://show.MarketFlow.com` (Canlı sunucu)
 - `headless: false`: Tarayıcı görünür modda açılır, manuel giriş yapılabilir
 
 ## AI Test Senaryoları
@@ -63,3 +63,4 @@ npx playwright install chromium
 ## Related
 - [[concepts/streaming-chat]] — SSE streaming testleri
 - [[entities/store-chat]] — Chat store test senaryoları
+

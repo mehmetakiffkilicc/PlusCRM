@@ -58,7 +58,7 @@ class SettingsView(APIView):
 
     def _ensure_default_settings(self):
         defaults = {
-            'crm_name': {'name': 'XPlusCRM', 'logo': ''},
+            'crm_name': {'name': 'MarketFlow', 'logo': ''},
             'localization': {'currency': 'TRY', 'language': 'tr', 'date_format': 'DD.MM.YYYY'},
             'appearance': {'primary_color': '#4c6ef5', 'theme': 'light'},
             'system': {'sync_frequency': '15', 'auto_sync': True, 'log_retention_days': 30},
@@ -67,3 +67,4 @@ class SettingsView(APIView):
         for key, value in defaults.items():
             if not SystemSetting.objects.filter(key=key).exists():
                 SystemSetting.objects.create(key=key, value=value)
+

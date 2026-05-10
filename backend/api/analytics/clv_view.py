@@ -327,7 +327,7 @@ def get_clv_customer_details(request, data_source_id):
 
             processed_list.append({
                 'id': c['cid'],
-                'name': c.get('name', str(c['cid'])),
+                'name': (c['name'] if 'name' in c.keys() else str(c['id'])) if c['id'] else 'Bilinmeyen',
                 'totalValue': round(c['total_value'], 2),
                 'orderCount': c['order_count'],
                 'frequency': frequency,

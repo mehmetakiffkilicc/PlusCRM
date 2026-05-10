@@ -1,6 +1,6 @@
 /* ============================================
    Kategori Analiz — Modern Redesign
-   Aligned with XPlusCRM Design System
+   Aligned with MarketFlow Design System
    ============================================ */
 
 @keyframes fadeInUp {
@@ -445,3 +445,4 @@
   .assocCategoryCol { flex: 0 0 120px; }
   .assocMetrics { gap: 10px; }
 }
+

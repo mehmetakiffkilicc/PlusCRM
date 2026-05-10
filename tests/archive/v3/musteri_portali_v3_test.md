@@ -4,7 +4,7 @@
 
 **Kaynak:** Ekran görüntüsünde "Harcama ve Ziyaret Trendi" grafiği boş, "AI Profil Özeti" spinner gösteriyor.
 **Görev:** Tüm sekmeler, kartlar, butonlar, modal'lar uçtan uca test edilecek. Birden fazla müşteri (farklı segment, harcama, tip) test edilecek.
-**URL:** https://backendofxplus.up.railway.app → Müşteri Portalı
+**URL:** https://backendofMarketFlow.up.railway.app → Müşteri Portalı
 
 ---
 
@@ -505,3 +505,4 @@ KONTROL: 250+ fiş yüklendikten sonra UI donmuyor mu?
 ## Sonuç Formatı
 
 Her testten sonra AUDIT_LOG.md güncellenir. Bulunan bug'lar dosyaya eklenir.
+

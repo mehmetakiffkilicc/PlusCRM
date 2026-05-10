@@ -259,7 +259,7 @@ export default function DashboardLayout() {
       icon: IconSettings,
       type: 'group',
       children: [
-        { id: 'settings', label: 'Ayarlar', icon: IconSettings, path: '/ayarlar' },
+        { id: 'settings', label: 'Ayarlar (Demo)', icon: IconSettings, path: '/ayarlar' },
       ],
     },
   ]
@@ -284,7 +284,7 @@ export default function DashboardLayout() {
             <span className="logo-icon">
               <IconRocket size={20} stroke={2} color="#fff" />
             </span>
-            {sidebarOpen && <span className="logo-text">XPlusCRM</span>}
+            {sidebarOpen && <span className="logo-text">MarketFlow</span>}
           </div>
           {!isMobile && (
             <button
@@ -411,27 +411,34 @@ export default function DashboardLayout() {
         {/* User Profile Footer */}
         <div className="sidebar-footer">
           <div className="user-profile">
-
             <Avatar
               size="sm"
               radius="xl"
               color="indigo"
               style={{ flexShrink: 0 }}
             >
-              {user?.email?.charAt(0).toUpperCase() || 'U'}
+              D
             </Avatar>
             {isSidebarOpen && (
               <div className="user-info">
                 <Text size="xs" fw={600} c="#f1f5f9" truncate style={{ maxWidth: 140 }}>
-                  {user?.email || 'Kullanıcı'}
+                  Demo User
                 </Text>
-                <button onClick={logout} className="logout-btn">
-                  <IconLogout size={12} stroke={2} style={{ marginRight: 4, verticalAlign: 'middle' }} />
-                  Çıkış Yap
-                </button>
+                <Text size="10px" c="dimmed">
+                  MarketFlow Demo
+                </Text>
               </div>
             )}
           </div>
+          
+          {isSidebarOpen && (
+            <div style={{ padding: '12px 16px', borderTop: '1px solid rgba(255,255,255,0.05)', marginTop: '8px' }}>
+              <Text size="10px" c="dimmed" style={{ textAlign: 'center', fontStyle: 'italic' }}>
+                Developed by Akif<br/>
+                © 2024 MarketFlow Project
+              </Text>
+            </div>
+          )}
         </div>
       </aside>
 
@@ -449,9 +456,23 @@ export default function DashboardLayout() {
             </button>
           )}
           <div className="header-title-area">
-            <Text size="xs" fw={500} c="dimmed" tt="uppercase" lts="0.5px">
-              XPlusCRM
-            </Text>
+            <Group gap="xs">
+              <Text size="xs" fw={500} c="dimmed" tt="uppercase" lts="0.5px">
+                MarketFlow
+              </Text>
+              <div style={{ 
+                background: 'linear-gradient(45deg, #4f46e5, #06b6d4)', 
+                color: 'white', 
+                fontSize: '10px', 
+                padding: '2px 8px', 
+                borderRadius: '12px', 
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}>
+                Demo Mode
+              </div>
+            </Group>
             <Title order={5} c="#0f172a" style={{ whiteSpace: 'nowrap' }}>
               {currentTitle}
             </Title>
@@ -552,3 +573,4 @@ export default function DashboardLayout() {
     </div>
   )
 }
+

@@ -4,7 +4,7 @@ set -e
 # Port configuration
 export PORT=${PORT:-8000}
 
-echo "=== XPlus Backend Startup Script ==="
+echo "=== MarketFlow Backend Startup Script ==="
 echo "=== Environment: ${ENVIRONMENT:-production} ==="
 echo "=== Port: $PORT ==="
 echo "=== Python: $(python --version) ==="
@@ -54,3 +54,4 @@ exec gunicorn core.wsgi:application \
   --error-logfile - \
   --capture-output \
   --log-level info
+

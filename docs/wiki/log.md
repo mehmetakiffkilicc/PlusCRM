@@ -260,4 +260,5 @@ Dokunulan dosyalar:
 - DashboardLayout.tsx: ai-sidebar-trigger, ai-trigger-icon, ai-trigger-text blokları silindi
 - DashboardLayout.tsx: IconSparkles importu duruyor (kampanya önerileri için gerekli)
 
-Not: Canlı sunucu (show.xpluscrm.com) henüz deploy edilmediği için testlerde eski hal görünebilir. Deploy sonrası test tekrarlanmalı.
+Not: Canlı sunucu (show.MarketFlow.com) henüz deploy edilmediği için testlerde eski hal görünebilir. Deploy sonrası test tekrarlanmalı.
+

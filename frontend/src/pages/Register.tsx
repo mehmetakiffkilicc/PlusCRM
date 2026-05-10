@@ -80,7 +80,7 @@ export default function Register() {
     <div className="auth-page">
       <div className="auth-container">
         <div className="auth-card">
-          <h1> XPlusCRM</h1>
+          <h1> MarketFlow</h1>
           <h2>Kayıt Ol</h2>
 
           <form onSubmit={handleSubmit}>
@@ -142,3 +142,4 @@ export default function Register() {
     </div>
   )
 }
+

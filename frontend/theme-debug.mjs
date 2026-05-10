@@ -10,7 +10,7 @@ import { chromium } from 'playwright';
   page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); });
 
   // Login
-  await page.goto('https://show.xpluscrm.com/giris');
+  await page.goto('https://show.MarketFlow.com/giris');
   await page.waitForTimeout(2000);
   await page.fill('input[type="email"], input[name="email"], input[placeholder*="mail"]', 'makif4596@gmail.com');
   await page.fill('input[type="password"], input[name="password"]', 'Test1234');
@@ -18,7 +18,7 @@ import { chromium } from 'playwright';
   await page.waitForTimeout(3000);
 
   // Go to Settings
-  await page.goto('https://show.xpluscrm.com/ayarlar');
+  await page.goto('https://show.MarketFlow.com/ayarlar');
   await page.waitForTimeout(4000);
 
   // Debug: list theme elements
@@ -68,3 +68,4 @@ import { chromium } from 'playwright';
   
   await browser.close();
 })();
+

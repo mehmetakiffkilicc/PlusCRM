@@ -3662,13 +3662,13 @@ def get_customer_info_analysis(request, data_source_id):
         cursor.execute(f"""
             SELECT
                 COUNT(m.id)                                             AS total,
-                COUNT(m.id) FILTER (WHERE md.rfm_segment NOT ILIKE '%kaybed%'
-                                    AND md.rfm_segment NOT ILIKE '%riskli%')          AS active,
-                COUNT(m.id) FILTER (WHERE m.telefon IS NOT NULL
-                                    AND LENGTH(CAST(m.telefon AS TEXT)) > 5)         AS filled_phone,
-                COUNT(m.id) FILTER (WHERE m.tip IS NOT NULL)                           AS filled_type,
-                COUNT(m.id) FILTER (WHERE md.rfm_segment IS NOT NULL)                   AS filled_segment,
-                COUNT(m.id) FILTER (WHERE m.onay_durumu IS NOT NULL)                   AS filled_approval
+                COUNT(CASE WHEN md.rfm_segment NOT LIKE '%kaybed%'
+                                    AND md.rfm_segment NOT LIKE '%riskli%' THEN m.id END)          AS active,
+                COUNT(CASE WHEN m.telefon IS NOT NULL
+                                    AND LENGTH(CAST(m.telefon AS TEXT)) > 5 THEN m.id END)         AS filled_phone,
+                COUNT(CASE WHEN m.tip IS NOT NULL THEN m.id END)                           AS filled_type,
+                COUNT(CASE WHEN md.rfm_segment IS NOT NULL THEN m.id END)                   AS filled_segment,
+                COUNT(CASE WHEN m.onay_durumu IS NOT NULL THEN m.id END)                   AS filled_approval
             FROM musteriler m
             LEFT JOIN musteridetayozet md ON m.id = md.musteri_id
         """)

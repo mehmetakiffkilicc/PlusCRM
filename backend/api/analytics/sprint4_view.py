@@ -175,9 +175,9 @@ def get_rakip_riski(request, data_source_id):
 
         cursor.execute(f"""
             SELECT
-                COUNT(DISTINCT musteri_id) FILTER (WHERE skor >= 60) as yuksek,
-                COUNT(*) FILTER (WHERE skor >= 30 AND skor < 60) as orta,
-                COUNT(*) FILTER (WHERE skor < 30) as dusuk,
+                COUNT(CASE WHEN skor >= 60 THEN 1 END) as yuksek,
+                COUNT(CASE WHEN skor >= 30 AND skor < 60 THEN 1 END) as orta,
+                COUNT(CASE WHEN skor < 30 THEN 1 END) as dusuk,
                 COUNT(*) as toplam
             FROM (
                 SELECT LEAST(100, GREATEST(0,
@@ -218,9 +218,10 @@ def get_rakip_riski(request, data_source_id):
 
 def ensure_notes_table(cursor):
     """musteri_notlar tablosunu oluştur (yoksa)"""
-    cursor.execute("""
+    id_type = "SERIAL PRIMARY KEY" if db_engine.DB_BACKEND == 'postgresql' else "INTEGER PRIMARY KEY AUTOINCREMENT"
+    cursor.execute(f"""
         CREATE TABLE IF NOT EXISTS musteri_notlar (
-            id SERIAL PRIMARY KEY,
+            id {id_type},
             musteri_id INTEGER NOT NULL,
             kullanici_id INTEGER NOT NULL,
             baslik TEXT,
@@ -277,15 +278,23 @@ def musteri_notlari(request, data_source_id, customer_id):
             if onem not in ('dusuk', 'normal', 'yuksek', 'kritik'):
                 onem = 'normal'
 
-            cursor.execute(f"""
-                INSERT INTO musteri_notlar (musteri_id, kullanici_id, baslik, icerik, onem)
-                VALUES ({ph}, {ph}, {ph}, {ph}, {ph})
-                RETURNING id, olusturma_tarihi
-            """, (customer_id, user.id, baslik or None, icerik, onem))
-            row = cursor.fetchone()
+            if db_engine.DB_BACKEND == 'postgresql':
+                cursor.execute(f"""
+                    INSERT INTO musteri_notlar (musteri_id, kullanici_id, baslik, icerik, onem)
+                    VALUES ({ph}, {ph}, {ph}, {ph}, {ph})
+                    RETURNING id, olusturma_tarihi
+                """, (customer_id, user.id, baslik or None, icerik, onem))
+                row = cursor.fetchone()
+                not_id = db_engine.val(row, 'id')
+                tarih = db_engine.val(row, 'olusturma_tarihi')
+            else:
+                cursor.execute(f"""
+                    INSERT INTO musteri_notlar (musteri_id, kullanici_id, baslik, icerik, onem)
+                    VALUES ({ph}, {ph}, {ph}, {ph}, {ph})
+                """, (customer_id, user.id, baslik or None, icerik, onem))
+                not_id = cursor.lastrowid
+                tarih = datetime.now()
             conn.commit()
-            not_id = db_engine.val(row, 'id')
-            tarih = db_engine.val(row, 'olusturma_tarihi')
             return Response({
                 'id': not_id,
                 'tarih': tarih.isoformat() if hasattr(tarih, 'isoformat') else str(tarih),
@@ -331,9 +340,10 @@ def musteri_not_sil(request, data_source_id, customer_id, not_id):
 
 def ensure_gonderim_table(cursor):
     """kampanya_gonderimler tablosunu oluştur (yoksa)"""
-    cursor.execute("""
+    id_type = "SERIAL PRIMARY KEY" if db_engine.DB_BACKEND == 'postgresql' else "INTEGER PRIMARY KEY AUTOINCREMENT"
+    cursor.execute(f"""
         CREATE TABLE IF NOT EXISTS kampanya_gonderimler (
-            id SERIAL PRIMARY KEY,
+            id {id_type},
             oneri_id INTEGER NOT NULL,
             musteri_id INTEGER NOT NULL,
             kanal TEXT DEFAULT 'manuel',
@@ -471,14 +481,18 @@ def kampanya_gonderim_ozeti(request, data_source_id, oneri_id):
                     row[k] = row[k].isoformat()
 
         # 30 gün conversion: gönderim sonrası 30 gün içinde ilgili üründen satın alım
+        if db_engine.DB_BACKEND == 'postgresql':
+            date_filter = "s.tarih >= kg.gonderim_tarihi::date AND s.tarih <= kg.gonderim_tarihi::date + 30"
+        else:
+            date_filter = "s.tarih >= date(kg.gonderim_tarihi) AND s.tarih <= date(kg.gonderim_tarihi, '+30 days')"
+
         cursor.execute(f"""
             SELECT COUNT(DISTINCT kg.musteri_id) as conversion_sayisi
             FROM kampanya_gonderimler kg
             JOIN MusteriOnerileri mo ON kg.oneri_id = mo.oneri_id
             JOIN satislar s ON s.musteri_id = kg.musteri_id
             WHERE kg.oneri_id = {ph}
-              AND s.tarih >= kg.gonderim_tarihi::date
-              AND s.tarih <= kg.gonderim_tarihi::date + 30
+              AND {date_filter}
         """, (oneri_id,))
         conv_row = cursor.fetchone()
         otomatik_conversion = db_engine.val(conv_row, 'conversion_sayisi', 0) if conv_row else 0

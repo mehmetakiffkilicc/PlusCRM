@@ -1,6 +1,6 @@
 # Marka Sadakati Test Raporu
 **Tarih:** 2026-04-29  
-**URL:** https://show.xpluscrm.com/marka-sadakati
+**URL:** https://show.MarketFlow.com/marka-sadakati
 
 ---
 
@@ -63,3 +63,4 @@ sahte_filtre_Bireysel = TRUE
 
 **Bug Sayısı:** 1 HIGH + 1 MEDIUM  
 **Genel Durum:** ❌ Filtre sahte
+

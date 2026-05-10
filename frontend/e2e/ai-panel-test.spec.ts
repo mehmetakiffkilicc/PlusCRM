@@ -1,7 +1,7 @@
 import { test, Page, BrowserContext } from '@playwright/test';
 import * as fs from 'fs';
 
-const BASE_URL = 'https://show.xpluscrm.com';
+const BASE_URL = 'https://show.MarketFlow.com';
 const AUTH_STATE_PATH = 'test-results/auth-state.json';
 
 async function openChat(page: Page) {
@@ -148,3 +148,4 @@ test.describe('AI Panel Testleri', () => {
     await page.screenshot({ path: 'test-results/10-panel.png' });
   });
 });
+

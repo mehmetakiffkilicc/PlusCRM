@@ -86,6 +86,13 @@ const InlineRouteLoader = () => (
 export default function App() {
   const { isAuthenticated } = useAuthStore()
 
+  // Ensure demo-token is set in localStorage for the demo environment
+  useEffect(() => {
+    if (!localStorage.getItem('auth_token')) {
+      localStorage.setItem('auth_token', 'demo-token')
+    }
+  }, [])
+
   // PERF: Avoid long first navigation waits on cold cache / high latency.
   // Preload the initial authenticated route chunk as soon as auth is known.
   useEffect(() => {
@@ -100,56 +107,39 @@ export default function App() {
     <ErrorBoundary>
       <Router>
         <Routes>
-          <Route
-            path="/giris"
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <Login />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/kayit"
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <Register />
-              </Suspense>
-            }
-          />
+          {/* Redirect Auth Pages in Demo Mode */}
+          <Route path="/giris" element={<Navigate to="/" />} />
+          <Route path="/kayit" element={<Navigate to="/" />} />
           
-          {/* Authenticated Routes with Layout */}
-          {isAuthenticated ? (
-             <Route element={<DashboardLayout />}>
-                <Route path="/" element={<Suspense fallback={<InlineRouteLoader />}><DashboardHome /></Suspense>} />
-                <Route path="/urunler" element={<Suspense fallback={<InlineRouteLoader />}><Products /></Suspense>} />
-                <Route path="/rfm-analizi" element={<Suspense fallback={<InlineRouteLoader />}><RFMAnalysis /></Suspense>} />
-                <Route path="/churn-analizi" element={<Suspense fallback={<InlineRouteLoader />}><ChurnAnalysis /></Suspense>} />
-                <Route path="/clv-analizi" element={<Suspense fallback={<InlineRouteLoader />}><CustomerLifetimeValue /></Suspense>} />
-                <Route path="/segmentasyon" element={<Suspense fallback={<InlineRouteLoader />}><Segmentation /></Suspense>} />
-                <Route path="/kampanyalar" element={<Suspense fallback={<InlineRouteLoader />}><Campaigns /></Suspense>} />
-                <Route path="/yeni-musteriler" element={<Suspense fallback={<InlineRouteLoader />}><NewCustomers /></Suspense>} />
+          {/* Dashboard Routes (No longer wrapped in ternary) */}
+          <Route element={<DashboardLayout />}>
+            <Route path="/" element={<Suspense fallback={<InlineRouteLoader />}><DashboardHome /></Suspense>} />
+            <Route path="/urunler" element={<Suspense fallback={<InlineRouteLoader />}><Products /></Suspense>} />
+            <Route path="/rfm-analizi" element={<Suspense fallback={<InlineRouteLoader />}><RFMAnalysis /></Suspense>} />
+            <Route path="/churn-analizi" element={<Suspense fallback={<InlineRouteLoader />}><ChurnAnalysis /></Suspense>} />
+            <Route path="/clv-analizi" element={<Suspense fallback={<InlineRouteLoader />}><CustomerLifetimeValue /></Suspense>} />
+            <Route path="/segmentasyon" element={<Suspense fallback={<InlineRouteLoader />}><Segmentation /></Suspense>} />
+            <Route path="/kampanyalar" element={<Suspense fallback={<InlineRouteLoader />}><Campaigns /></Suspense>} />
+            <Route path="/yeni-musteriler" element={<Suspense fallback={<InlineRouteLoader />}><NewCustomers /></Suspense>} />
 
-                <Route path="/marka-raporu" element={<Suspense fallback={<InlineRouteLoader />}><BrandReport /></Suspense>} />
-                <Route path="/kategori-raporu" element={<Suspense fallback={<InlineRouteLoader />}><CategoryReport /></Suspense>} />
-                <Route path="/musteri-portali" element={<Suspense fallback={<InlineRouteLoader />}><CustomerPortal /></Suspense>} />
-                <Route path="/ayarlar" element={<Suspense fallback={<InlineRouteLoader />}><Settings /></Suspense>} />
-                <Route path="/kampanya-onerileri" element={<Suspense fallback={<InlineRouteLoader />}><CampaignSuggestions /></Suspense>} />
-                <Route path="/kohort-analizi" element={<Suspense fallback={<InlineRouteLoader />}><KohortAnalizi /></Suspense>} />
-                <Route path="/urun-birliktelik" element={<Suspense fallback={<InlineRouteLoader />}><UrunBirliktelik /></Suspense>} />
-                <Route path="/marka-sadakati" element={<Suspense fallback={<InlineRouteLoader />}><MarkaSadakati /></Suspense>} />
-                <Route path="/enflasyon-profil" element={<Suspense fallback={<InlineRouteLoader />}><EnflasyonProfil /></Suspense>} />
-                <Route path="/rakip-riski" element={<Suspense fallback={<InlineRouteLoader />}><RakipRiski /></Suspense>} />
-                <Route path="/hane-analizi" element={<Suspense fallback={<InlineRouteLoader />}><HaneAnalizi /></Suspense>} />
-                 <Route path="/ai-takvim" element={<Suspense fallback={<InlineRouteLoader />}><ScheduledCampaigns /></Suspense>} />
-                <Route path="/ai-paneller" element={<Suspense fallback={<InlineRouteLoader />}><AIDashboards /></Suspense>} />
-                <Route path="/ai-paneller/:id" element={<Suspense fallback={<InlineRouteLoader />}><AIDashboardDetail /></Suspense>} />
-                <Route path="/magaza-analizi" element={<Suspense fallback={<InlineRouteLoader />}><StoreAnalysis /></Suspense>} />
-                {/* Fallback for unknown routes */}
-                <Route path="*" element={<NotFoundPage />} />
-             </Route>
-          ) : (
-             <Route path="*" element={<Navigate to="/giris" />} />
-          )}
+            <Route path="/marka-raporu" element={<Suspense fallback={<InlineRouteLoader />}><BrandReport /></Suspense>} />
+            <Route path="/kategori-raporu" element={<Suspense fallback={<InlineRouteLoader />}><CategoryReport /></Suspense>} />
+            <Route path="/musteri-portali" element={<Suspense fallback={<InlineRouteLoader />}><CustomerPortal /></Suspense>} />
+            <Route path="/ayarlar" element={<Suspense fallback={<InlineRouteLoader />}><Settings /></Suspense>} />
+            <Route path="/kampanya-onerileri" element={<Suspense fallback={<InlineRouteLoader />}><CampaignSuggestions /></Suspense>} />
+            <Route path="/kohort-analizi" element={<Suspense fallback={<InlineRouteLoader />}><KohortAnalizi /></Suspense>} />
+            <Route path="/urun-birliktelik" element={<Suspense fallback={<InlineRouteLoader />}><UrunBirliktelik /></Suspense>} />
+            <Route path="/marka-sadakati" element={<Suspense fallback={<InlineRouteLoader />}><MarkaSadakati /></Suspense>} />
+            <Route path="/enflasyon-profil" element={<Suspense fallback={<InlineRouteLoader />}><EnflasyonProfil /></Suspense>} />
+            <Route path="/rakip-riski" element={<Suspense fallback={<InlineRouteLoader />}><RakipRiski /></Suspense>} />
+            <Route path="/hane-analizi" element={<Suspense fallback={<InlineRouteLoader />}><HaneAnalizi /></Suspense>} />
+            <Route path="/ai-takvim" element={<Suspense fallback={<InlineRouteLoader />}><ScheduledCampaigns /></Suspense>} />
+            <Route path="/ai-paneller" element={<Suspense fallback={<InlineRouteLoader />}><AIDashboards /></Suspense>} />
+            <Route path="/ai-paneller/:id" element={<Suspense fallback={<InlineRouteLoader />}><AIDashboardDetail /></Suspense>} />
+            <Route path="/magaza-analizi" element={<Suspense fallback={<InlineRouteLoader />}><StoreAnalysis /></Suspense>} />
+            {/* Fallback for unknown routes */}
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
         </Routes>
       </Router>
     </ErrorBoundary>

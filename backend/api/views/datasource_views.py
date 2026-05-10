@@ -57,7 +57,7 @@ class DataSourceListView(APIView, TokenAuthMixin):
             logger.info(f"User {user.username} has no data sources. Creating default system source.")
             DataSource.objects.create(
                 user_id=user.id,
-                name='XPlusCRM Veri',
+                name='MarketFlow Veri',
                 type='database',
                 data=[],
                 connection_info={
@@ -382,4 +382,5 @@ class PlatformStatusView(APIView):
                 'summary': {'online': 0, 'total': 0, 'overall_status': 'down'},
                 'error': str(e)
             }, status=HTTP_400_BAD_REQUEST)
+
 

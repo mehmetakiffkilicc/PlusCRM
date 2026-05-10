@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'core.middleware.SecurityHeadersMiddleware',
+    'core.middleware.DemoBrandingMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -171,10 +172,10 @@ if not DEBUG:
 # CORS Settings
 CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL', default=False, cast=bool) # Sadece DEBUG veya özel durumlar için
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', 
-    default='http://localhost:3000,http://localhost:3001,http://127.0.0.1:3000,https://show.xpluscrm.com'
+    default='http://localhost:3000,http://localhost:3001,http://127.0.0.1:3000,https://show.MarketFlow.com'
 ).split(',')
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='http://localhost:3000,http://localhost:3001,https://*.up.railway.app,https://show.xpluscrm.com').split(',')
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='http://localhost:3000,http://localhost:3001,https://*.up.railway.app,https://show.MarketFlow.com').split(',')
 
 # REST Framework
 NUM_PROXIES = 1  # Railway reverse proxy — throttle için gerçek IP'yi X-Forwarded-For'dan al
@@ -266,3 +267,4 @@ if DEBUG:
     }
     LOGGING['loggers']['django']['handlers'].append('file')
     LOGGING['loggers']['api']['handlers'] = ['api_file', 'console']
+

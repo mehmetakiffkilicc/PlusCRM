@@ -91,7 +91,7 @@ def get_customer_list(request, data_source_id):
 
     if search:
         if db_engine.DB_BACKEND == 'postgresql':
-            where_clauses.append(f"(m.ad ILIKE {ph} OR m.telefon ILIKE {ph} OR CAST(m.id AS TEXT) ILIKE {ph})")
+            where_clauses.append(f"(m.ad LIKE {ph} OR m.telefon LIKE {ph} OR CAST(m.id AS TEXT) LIKE {ph})")
         else:
             where_clauses.append(f"(m.ad LIKE {ph} OR m.telefon LIKE {ph} OR m.id LIKE {ph})")
         search_val = f"%{search}%"
@@ -107,7 +107,7 @@ def get_customer_list(request, data_source_id):
             selected_segments = selected_segments[0].split(',')
         seg_placeholders = ','.join([ph] * len(selected_segments))
         if db_engine.DB_BACKEND == 'postgresql':
-            where_clauses.append(f"m.rfm_segment ILIKE ANY(ARRAY[{seg_placeholders}])")
+            where_clauses.append(f"m.rfm_segment IN ({seg_placeholders})")
         else:
             where_clauses.append(f"m.rfm_segment IN ({seg_placeholders})")
         params.extend(selected_segments)
@@ -394,10 +394,10 @@ def get_customer_detail(request, data_source_id, customer_id):
 
                     for (etiket, skor) in vurgu_kategoriler:
                         if etiket == 'bebek':
-                            where_clause = "(k.ana ILIKE '%bebek%' OR k.alt1 ILIKE '%bebek%')"
+                            where_clause = "(k.ana LIKE '%bebek%' OR k.alt1 LIKE '%bebek%')"
                             label = 'Bebek Ürünleri'
                         else:
-                            where_clause = "(k.alt1 ILIKE '%oyuncak%' OR k.alt1 ILIKE '%çocuk%' OR k.alt1 ILIKE '%kırtasiye%')"
+                            where_clause = "(k.alt1 LIKE '%oyuncak%' OR k.alt1 LIKE '%çocuk%' OR k.alt1 LIKE '%kırtasiye%')"
                             label = 'Çocuk Ürünleri'
 
                         cursor.execute(f"""
@@ -483,13 +483,13 @@ def get_customer_detail(request, data_source_id, customer_id):
         # DÖNEMSEL KPI'lar (Tarih filtresi varsa anlık hesapla)
         if start_date or end_date:
             try:
-                period_where = ["musteri_id = %s"]
+                period_where = [f"musteri_id = {ph}"]
                 period_params = [customer_id]
                 if start_date: 
-                    period_where.append("tarih >= %s")
+                    period_where.append(f"tarih >= {ph}")
                     period_params.append(start_date)
                 if end_date:
-                    period_where.append("tarih <= %s")
+                    period_where.append(f"tarih <= {ph}")
                     period_params.append(end_date)
                 
                 period_where_clause = " AND ".join(period_where)
@@ -996,9 +996,9 @@ def get_musteri_etiket_ozeti(request, data_source_id):
         filter_parts = []
         for col in all_labels:
             if col in SCORE_COLUMNS:
-                filter_parts.append(f"COUNT(DISTINCT me.{col}) FILTER (WHERE me.{col} >= 0.4) as {col}")
+                filter_parts.append(f"COUNT(DISTINCT CASE WHEN me.{col} >= 0.4 THEN me.{col} END) as {col}")
             else:
-                filter_parts.append(f"COUNT(DISTINCT me.musteri_id) FILTER (WHERE me.{col} = TRUE) as {col}")
+                filter_parts.append(f"COUNT(DISTINCT CASE WHEN me.{col} = TRUE THEN me.musteri_id END) as {col}")
 
         sql = f"SELECT {', '.join(filter_parts)} FROM musterietiketler me {filter_join}"
         cursor.execute(sql, join_params)
@@ -1114,8 +1114,8 @@ def get_musteri_zaman_cizelgesi(request, data_source_id, customer_id):
             tablo_var = cursor.fetchone()['var']
             if tablo_var:
                 cursor.execute(f"""
-                    SELECT TO_CHAR(kayit_tarihi, 'YYYY-MM') as ay,
-                           TO_CHAR(kayit_tarihi, 'YYYY-MM-DD') as kayit_tarihi,
+                    SELECT {db_engine.strftime_expr('%Y-%m', 'kayit_tarihi')} as ay,
+                           {db_engine.strftime_expr('%Y-%m-%d', 'kayit_tarihi')} as kayit_tarihi,
                            rfm_segment
                     FROM rfm_segment_log
                     WHERE musteri_id = {ph}
@@ -1195,7 +1195,7 @@ def get_segment_gecis_matrisi(request, data_source_id):
         # rfm_segment_log tablosundan son iki distinct ay'ı bul
         try:
             cursor.execute("""
-                SELECT DISTINCT TO_CHAR(kayit_tarihi, 'YYYY-MM') as ay
+                SELECT DISTINCT {db_engine.strftime_expr('%Y-%m', 'kayit_tarihi')} as ay
                 FROM rfm_segment_log
                 ORDER BY ay DESC
                 LIMIT 2
@@ -1232,8 +1232,8 @@ def get_segment_gecis_matrisi(request, data_source_id):
             FROM rfm_segment_log onceki
             JOIN rfm_segment_log buay
                 ON onceki.musteri_id = buay.musteri_id
-            WHERE TO_CHAR(onceki.kayit_tarihi, 'YYYY-MM') = %s
-              AND TO_CHAR(buay.kayit_tarihi, 'YYYY-MM') = %s
+            WHERE {db_engine.strftime_expr('%Y-%m', 'onceki.kayit_tarihi')} = {ph}
+              AND {db_engine.strftime_expr('%Y-%m', 'buay.kayit_tarihi')} = {ph}
             GROUP BY kaynak_segment, hedef_segment
             ORDER BY musteri_sayisi DESC
         """, (onceki_ay, bu_ay))

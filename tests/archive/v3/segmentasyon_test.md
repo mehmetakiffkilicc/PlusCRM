@@ -1,6 +1,6 @@
 # Segmentasyon Test Raporu v2 (Filtre Odaklı)
 **Tarih:** 2026-04-29  
-**URL:** https://show.xpluscrm.com/segmentasyon
+**URL:** https://show.MarketFlow.com/segmentasyon
 
 ---
 
@@ -59,3 +59,4 @@ sahte_filtre = TRUE
 
 **Bug Sayısı:** 1 MEDIUM  
 **Genel Durum:** ⚠️ Filtreler sahte
+

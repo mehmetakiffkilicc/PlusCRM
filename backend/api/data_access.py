@@ -886,7 +886,7 @@ def get_platform_status():
 
             t0 = time.time()
             req = urllib.request.Request(url, method='GET')
-            req.add_header('User-Agent', 'XPlusCRM-Monitor/1.0')
+            req.add_header('User-Agent', 'MarketFlow-Monitor/1.0')
             # Timeout'u 5 saniyeye çıkaralım (Railway proxy bazen yavaş olabilir)
             with urllib.request.urlopen(req, timeout=5) as resp:
                 latency = round((time.time() - t0) * 1000)
@@ -1215,7 +1215,7 @@ def get_system_status():
     # 3. Scheduler Durumu (Moved to Sync Worker)
     status['scheduler'] = {
         'running': False,
-        'info': 'Scheduler is managed by xplus-worker service on Railway'
+        'info': 'Scheduler is managed by MarketFlow-worker service on Railway'
     }
     
     return status
@@ -1486,10 +1486,10 @@ def get_clv_data_optimized(year=None, month=None, start_date=None, end_date=None
             result.append({
                 'cid': row['musteri_id'],
                 'name': row['customer_name'] or str(row['musteri_id']),
-                'total_value': row['predicted_clv'] if row.get('predicted_clv') and row['predicted_clv'] > 0 else row['total_value'],
+                'total_value': row['predicted_clv'] if 'predicted_clv' in row.keys() and row['predicted_clv'] and row['predicted_clv'] > 0 else row['total_value'],
                 'historical_value': row['total_value'],
                 'order_count': row['order_count'],
-                'first_date': row.get('first_date'),
+                'first_date': row['first_date'] if 'first_date' in row.keys() else None,
                 'last_date': row['last_date']
             })
             
@@ -1503,3 +1503,4 @@ def get_clv_data_optimized(year=None, month=None, start_date=None, end_date=None
 
     finally:
         db_engine.release_connection(conn)
+

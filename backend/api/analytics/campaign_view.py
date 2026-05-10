@@ -780,7 +780,7 @@ def get_ai_campaign_summary(request, pk):
                     FROM satislar s
                     JOIN urunler u ON s.urun_id = u.id
                     JOIN kategoriler k ON k.id = u.kategori_id
-                    WHERE (k.alt2 = %s OR k.alt1 = %s OR k.ana = %s)
+                    WHERE (k.alt2 = {ph} OR k.alt1 = {ph} OR k.ana = {ph})
                       AND s.musteri_id IS NOT NULL AND s.miktar > 0 AND s.tutar > 0
                 """, [source_cat, source_cat, source_cat])
                 row_src = cursor.fetchone()
@@ -840,9 +840,9 @@ def get_ai_campaign_summary(request, pk):
                 WHERE s.fis_no IN (
                     SELECT fis_no FROM satislar
                     JOIN kategoriler kk ON kk.id = kategori_id
-                    WHERE (kk.alt2 = %s OR kk.alt1 = %s OR kk.ana = %s) AND tutar > 0
+                    WHERE (kk.alt2 = {ph} OR kk.alt1 = {ph} OR kk.ana = {ph}) AND tutar > 0
                     INTERSECT
-                    SELECT fis_no FROM satislar WHERE kategori_id = %s AND tutar > 0
+                    SELECT fis_no FROM satislar WHERE kategori_id = {ph} AND tutar > 0
                 )
                 AND s.tutar > 0
             """, [source_cat, source_cat, source_cat, kategori_id,
@@ -858,8 +858,8 @@ def get_ai_campaign_summary(request, pk):
                 SELECT AVG(s.tutar / NULLIF(s.miktar, 0)) AS avg_val
                 FROM satislar s
                 JOIN kategoriler k ON k.id = s.kategori_id
-                WHERE (k.alt1 = %s OR k.alt2 = %s)
-                  AND s.miktar > 0 AND s.tarih >= CURRENT_DATE - INTERVAL '365 days'
+                WHERE (k.alt1 = {ph} OR k.alt2 = {ph})
+                  AND s.miktar > 0 AND s.tarih >= {db_engine.last_year_expr()}
             """, [source_cat, source_cat])
             r4 = cursor.fetchone()
             kaynak_avg = float(db_engine.val(r4, 'avg_val', 0) or 0)
@@ -879,7 +879,7 @@ def get_ai_campaign_summary(request, pk):
                     FROM satislar s
                     WHERE s.kategori_id = {ph}
                       AND s.miktar > 0 AND s.tutar > 0
-                      AND s.tarih >= CURRENT_DATE - INTERVAL '365 days'
+                      AND s.tarih >= {db_engine.last_year_expr()}
                 """, [kategori_id])
                 r_fb = cursor.fetchone()
                 if r_fb:
@@ -891,7 +891,7 @@ def get_ai_campaign_summary(request, pk):
                         JOIN kategoriler k ON k.id = s.kategori_id
                         WHERE (k.ana = {ph} OR k.alt1 = {ph} OR k.alt2 = {ph})
                           AND s.miktar > 0 AND s.tutar > 0
-                          AND s.tarih >= CURRENT_DATE - INTERVAL '365 days'
+                          AND s.tarih >= {db_engine.last_year_expr()}
                     """, [source_cat, source_cat, source_cat])
                     r_ka = cursor.fetchone()
                     if r_ka:
@@ -917,12 +917,14 @@ def get_ai_campaign_summary(request, pk):
         gercek_fiyat_map = {}
         if urun_ids:
             try:
-                ph_list = ','.join([db_engine.ph()] * len(urun_ids))
+                last_year = db_engine.last_year_expr()
+                ph = db_engine.ph()
+                ph_list = ','.join([ph] * len(urun_ids))
                 cursor.execute(f"""
                     SELECT s.urun_id, AVG(s.tutar / NULLIF(s.miktar, 0)) as avg_fiyat
                     FROM satislar s
                     WHERE s.urun_id IN ({ph_list}) AND s.miktar > 0 AND s.tutar > 0
-                      AND s.tarih >= CURRENT_DATE - INTERVAL '365 days'
+                      AND s.tarih >= {last_year}
                     GROUP BY s.urun_id
                 """, urun_ids)
                 for fr in cursor.fetchall():
@@ -936,12 +938,14 @@ def get_ai_campaign_summary(request, pk):
         # Kategori bazlı ortalama fiyat (tüm ürünler için son fallback)
         kat_avg_fallback = 0.0
         try:
+            last_year = db_engine.last_year_expr()
+            ph = db_engine.ph()
             cursor.execute(f"""
                 SELECT AVG(s.tutar / NULLIF(s.miktar, 0)) AS avg_val
                 FROM satislar s
                 WHERE s.kategori_id = {ph}
                   AND s.miktar > 0 AND s.tutar > 0
-                  AND s.tarih >= CURRENT_DATE - INTERVAL '365 days'
+                  AND s.tarih >= {last_year}
             """, [kategori_id])
             r_kat = cursor.fetchone()
             if r_kat:
@@ -1383,13 +1387,15 @@ def enrich_urun_fiyatlari(request):
             if not urun_ids:
                 continue
 
-            ph_list = ','.join(['%s'] * len(urun_ids))
+            last_year = db_engine.last_year_expr()
+            ph = db_engine.ph()
+            ph_list = ','.join([ph] * len(urun_ids))
             read_cursor.execute(f"""
                 SELECT urun_id, AVG(tutar / NULLIF(miktar, 0)) as avg_fiyat
                 FROM satislar
                 WHERE urun_id IN ({ph_list})
                   AND miktar > 0 AND tutar > 0
-                  AND tarih >= CURRENT_DATE - INTERVAL '365 days'
+                  AND tarih >= {last_year}
                 GROUP BY urun_id
             """, urun_ids)
             fiyat_map = {}
@@ -1410,52 +1416,55 @@ def enrich_urun_fiyatlari(request):
 
             if changed:
                 cursor.execute(
-                    "UPDATE otomatikkampanyaonerileri SET onerilen_urunler = %s WHERE oneri_id = %s",
+                    f"UPDATE otomatikkampanyaonerileri SET onerilen_urunler = {ph} WHERE oneri_id = {ph}",
                     [_json.dumps(urunler, ensure_ascii=False), oneri_id]
                 )
                 updated += 1
 
         conn.commit()
 
+        last_year = db_engine.last_year_expr()
+        num_cast = "::numeric" if db_engine.DB_BACKEND == 'postgresql' else ""
+
         # birlikte_ciro güncelle: (tahmini_katilim * kaynak_avg) + potansiyel_ciro
-        cursor.execute("""
-            UPDATE otomatikkampanyaonerileri o
+        cursor.execute(f"""
+            UPDATE otomatikkampanyaonerileri
             SET birlikte_ciro = ROUND((
-                o.tahmini_katilim * (
+                tahmini_katilim * (
                     SELECT AVG(s.tutar / NULLIF(s.miktar, 0))
                     FROM satislar s
                     JOIN kategoriler k ON k.id = s.kategori_id
-                    WHERE (k.alt1 = o.kaynak_kategori_ad OR k.alt2 = o.kaynak_kategori_ad)
+                    WHERE (k.alt1 = otomatikkampanyaonerileri.kaynak_kategori_ad OR k.alt2 = otomatikkampanyaonerileri.kaynak_kategori_ad)
                       AND s.miktar > 0
-                      AND s.tarih >= CURRENT_DATE - INTERVAL '365 days'
-                ) + o.potansiyel_ciro
-            )::numeric, 2)
-            WHERE o.kampanya_tipi = 'Cross-Sell'
+                      AND s.tarih >= {last_year}
+                ) + potansiyel_ciro
+            ){num_cast}, 2)
+            WHERE kampanya_tipi = 'Cross-Sell'
         """)
         birlikte_updated = cursor.rowcount
 
         # mevcut_birlikte_ciro güncelle: fis_sayisi * (kaynak_avg + hedef_avg) son 30 gun
-        cursor.execute("""
-            UPDATE otomatikkampanyaonerileri o
+        cursor.execute(f"""
+            UPDATE otomatikkampanyaonerileri
             SET mevcut_birlikte_ciro = ROUND((
-                o.fis_sayisi * (
+                fis_sayisi * (
                     COALESCE((
                         SELECT AVG(s.tutar / NULLIF(s.miktar, 0))
                         FROM satislar s
                         JOIN kategoriler k ON k.id = s.kategori_id
-                        WHERE (k.alt1 = o.kaynak_kategori_ad OR k.alt2 = o.kaynak_kategori_ad)
-                          AND s.miktar > 0 AND s.tarih >= CURRENT_DATE - INTERVAL '365 days'
+                        WHERE (k.alt1 = otomatikkampanyaonerileri.kaynak_kategori_ad OR k.alt2 = otomatikkampanyaonerileri.kaynak_kategori_ad)
+                          AND s.miktar > 0 AND s.tarih >= {last_year}
                     ), 0)
                     +
                     COALESCE((
                         SELECT AVG(s.tutar / NULLIF(s.miktar, 0))
                         FROM satislar s
-                        WHERE s.kategori_id = o.kategori_id
-                          AND s.miktar > 0 AND s.tarih >= CURRENT_DATE - INTERVAL '365 days'
+                        WHERE s.kategori_id = otomatikkampanyaonerileri.kategori_id
+                          AND s.miktar > 0 AND s.tarih >= {last_year}
                     ), 0)
                 )
-            )::numeric, 2)
-            WHERE o.kampanya_tipi = 'Cross-Sell'
+            ){num_cast}, 2)
+            WHERE kampanya_tipi = 'Cross-Sell'
         """)
         mevcut_updated = cursor.rowcount
         conn.commit()

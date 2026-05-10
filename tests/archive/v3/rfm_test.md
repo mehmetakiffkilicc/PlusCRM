@@ -1,6 +1,6 @@
 # RFM Analizi Test Raporu v2 (Filtre Odaklı)
 **Tarih:** 2026-04-29  
-**URL:** https://show.xpluscrm.com/rfm-analizi
+**URL:** https://show.MarketFlow.com/rfm-analizi
 
 ---
 
@@ -84,3 +84,4 @@ sahte_filtre_yil = TRUE
 
 **Bug Sayısı:** 2 HIGH + 1 MEDIUM  
 **Genel Durum:** ❌ Tüm filtreler sahte
+

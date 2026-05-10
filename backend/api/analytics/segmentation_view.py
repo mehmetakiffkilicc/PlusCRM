@@ -389,71 +389,49 @@ def get_beklenen_musteriler(request, data_source_id):
         filtre = request.GET.get('filtre', '30_gun' if tip == 'geciken' else 'bu_hafta')
         magaza_id = request.GET.get('magaza_id', '').strip()
 
+        tahmini = db_engine.col_date_add_expr('v.son_ziyaret_tarihi', 'v.ort_ziyaret_araligi')
+        today = "CURRENT_DATE" if db_engine.DB_BACKEND == 'postgresql' else "date('now')"
+        yesterday = db_engine.date_offset_expr(-1)
+        last7 = db_engine.date_offset_expr(-7)
+        last30 = db_engine.date_offset_expr(-30)
+        tomorrow = db_engine.date_offset_expr(1)
+        next7 = db_engine.date_offset_expr(7)
+        
+        week_start = db_engine.date_trunc_expr('week', today)
+        week_end = db_engine.date_offset_expr(6, week_start)
+        
+        month_start = db_engine.date_trunc_expr('month', today)
+        if db_engine.DB_BACKEND == 'postgresql':
+            month_end = "(date_trunc('month', CURRENT_DATE) + INTERVAL '1 month - 1 day')::date"
+        else:
+            month_end = "date('now', 'start of month', '+1 month', '-1 day')"
+
         if tip == 'geciken':
             # Tahmini ziyaret tarihi geçmiş ama gelmemiş
             if filtre == 'bugun':
-                # Bugün beklenen ama henüz gelmedi (tahmini = bugün ama son ziyaret bugünden önce)
-                date_filter = """
-                    (v.son_ziyaret_tarihi + v.ort_ziyaret_araligi * INTERVAL '1 day') <= CURRENT_DATE - INTERVAL '1 second'
-                    AND v.son_ziyaret_tarihi < CURRENT_DATE
-                    AND (v.son_ziyaret_tarihi + v.ort_ziyaret_araligi * INTERVAL '1 day') >= CURRENT_DATE::date
-                """
+                # Bugün beklenen ama henüz gelmedi (aslında tahmini < bugün olmalı geciken diyebilmek için)
+                date_filter = f"{tahmini} < {today} AND v.son_ziyaret_tarihi < {today}"
             elif filtre == 'bu_hafta':
-                # Haftalık gecikenler: Haftanın başından düne kadar
-                date_filter = """
-                    (v.son_ziyaret_tarihi + v.ort_ziyaret_araligi * INTERVAL '1 day')
-                        BETWEEN date_trunc('week', CURRENT_DATE)::date
-                            AND CURRENT_DATE - INTERVAL '1 day'
-                """
+                date_filter = f"{tahmini} BETWEEN {week_start} AND {yesterday}"
             elif filtre == 'bu_ay':
-                date_filter = """
-                    (v.son_ziyaret_tarihi + v.ort_ziyaret_araligi * INTERVAL '1 day')
-                        BETWEEN date_trunc('month', CURRENT_DATE)::date
-                            AND CURRENT_DATE - INTERVAL '1 day'
-                """
+                date_filter = f"{tahmini} BETWEEN {month_start} AND {yesterday}"
             elif filtre == '7_gun':
-                date_filter = """
-                    (v.son_ziyaret_tarihi + v.ort_ziyaret_araligi * INTERVAL '1 day')
-                        BETWEEN (CURRENT_DATE - INTERVAL '7 days')::date
-                            AND CURRENT_DATE - INTERVAL '1 day'
-                """
-            else:  # '30_gun' veya default
-                # Son 30 gün içinde beklenen ama gelmeyenler
-                date_filter = """
-                    (v.son_ziyaret_tarihi + v.ort_ziyaret_araligi * INTERVAL '1 day')
-                        BETWEEN (CURRENT_DATE - INTERVAL '30 days')::date
-                            AND CURRENT_DATE - INTERVAL '1 day'
-                """
+                date_filter = f"{tahmini} BETWEEN {last7} AND {yesterday}"
+            else:
+                date_filter = f"{tahmini} BETWEEN {last30} AND {yesterday}"
             order_sql = "tahmini_ziyaret_tarihi DESC"
         else:
             # Beklenen: sadece ileriye dönük
             if filtre == 'bugun':
-                date_filter = """
-                    (v.son_ziyaret_tarihi + v.ort_ziyaret_araligi * INTERVAL '1 day')::date = CURRENT_DATE
-                """
+                date_filter = f"{tahmini} = {today}"
             elif filtre == 'bu_hafta':
-                # Haftanın geri kalanı
-                date_filter = """
-                    (v.son_ziyaret_tarihi + v.ort_ziyaret_araligi * INTERVAL '1 day')
-                        BETWEEN CURRENT_DATE
-                            AND (date_trunc('week', CURRENT_DATE) + INTERVAL '6 days')::date
-                """
+                date_filter = f"{tahmini} BETWEEN {today} AND {week_end}"
             elif filtre == 'yarin':
-                date_filter = """
-                    (v.son_ziyaret_tarihi + v.ort_ziyaret_araligi * INTERVAL '1 day')::date = CURRENT_DATE + INTERVAL '1 day'
-                """
+                date_filter = f"{tahmini} = {tomorrow}"
             elif filtre == '7_gun':
-                date_filter = """
-                    (v.son_ziyaret_tarihi + v.ort_ziyaret_araligi * INTERVAL '1 day')
-                        BETWEEN CURRENT_DATE
-                            AND (CURRENT_DATE + INTERVAL '7 days')::date
-                """
-            else:  # 'bu_ay' veya default
-                date_filter = """
-                    (v.son_ziyaret_tarihi + v.ort_ziyaret_araligi * INTERVAL '1 day')
-                        BETWEEN CURRENT_DATE
-                            AND (date_trunc('month', CURRENT_DATE) + INTERVAL '1 month - 1 day')::date
-                """
+                date_filter = f"{tahmini} BETWEEN {today} AND {next7}"
+            else:
+                date_filter = f"{tahmini} BETWEEN {today} AND {month_end}"
             order_sql = "tahmini_ziyaret_tarihi ASC"
 
         sort_by = request.GET.get('sort_by')
@@ -476,16 +454,16 @@ def get_beklenen_musteriler(request, data_source_id):
             order_sql = f"{sort_mapping[sort_by]} {sort_order.upper()}"
 
 
-        select_cols = """
+        select_cols = f"""
                 v.musteri_id,
                 o.ad_soyad,
                 m.telefon,
                 o.rfm_segment,
                 v.son_ziyaret_tarihi AS son_ziyaret_tarihi,
-                (v.son_ziyaret_tarihi + ROUND(v.ort_ziyaret_araligi)::int) AS tahmini_ziyaret_tarihi,
-                ROUND(v.ort_ziyaret_araligi::numeric, 1) AS ort_aralik_gun,
-                v.toplam_ziyaret::int AS toplam_ziyaret,
-                (CURRENT_DATE - (v.son_ziyaret_tarihi + ROUND(v.ort_ziyaret_araligi)::int)) AS gecikme_gun,
+                {tahmini} AS tahmini_ziyaret_tarihi,
+                ROUND(CAST(v.ort_ziyaret_araligi AS REAL), 1) AS ort_aralik_gun,
+                CAST(v.toplam_ziyaret AS INTEGER) AS toplam_ziyaret,
+                {db_engine.date_diff_days_expr(today, tahmini)} AS gecikme_gun,
                 COALESCE(o.toplam_harcama, 0) AS toplam_harcama,
                 COALESCE(o.ortalama_sepet_tutari, 0) AS ortalama_sepet_tutari,
                 COALESCE(o.ortalama_sepet_tutari, 0) AS tahmini_alisveris_tutari,
@@ -497,10 +475,8 @@ def get_beklenen_musteriler(request, data_source_id):
                     ELSE 'Dusuk'
                 END AS guven_skoru,
                 CASE
-                    WHEN (v.son_ziyaret_tarihi + ROUND(v.ort_ziyaret_araligi)::int) < CURRENT_DATE
-                        THEN 'Gecti'
-                    WHEN (v.son_ziyaret_tarihi + ROUND(v.ort_ziyaret_araligi)::int) = CURRENT_DATE
-                        THEN 'Bugun'
+                    WHEN {tahmini} < {today} THEN 'Gecti'
+                    WHEN {tahmini} = {today} THEN 'Bugun'
                     ELSE 'Yaklasan'
                 END AS durum,
                 m.kayit_magazasi as magaza_id,
@@ -518,8 +494,10 @@ def get_beklenen_musteriler(request, data_source_id):
         magaza_filter = ""
         magaza_params = []
         if magaza_id:
-            magaza_filter = " AND m.kayit_magazasi = %s"
+            magaza_filter = f" AND m.kayit_magazasi = {db_engine.ph()}"
             magaza_params.append(magaza_id)
+
+        mg_id_cast = "mg.id::text" if db_engine.DB_BACKEND == 'postgresql' else "mg.id"
 
         cursor.execute(f"""
             SELECT {select_cols}
@@ -527,10 +505,10 @@ def get_beklenen_musteriler(request, data_source_id):
             JOIN musteriler m ON v.musteri_id = m.id
             JOIN musteridetayozet o ON v.musteri_id = o.musteri_id
             LEFT JOIN musterietiketler e ON v.musteri_id = e.musteri_id
-            LEFT JOIN magazalar mg ON m.kayit_magazasi = mg.id::text
+            LEFT JOIN magazalar mg ON m.kayit_magazasi = {mg_id_cast}
             WHERE {base_where} {magaza_filter}
             ORDER BY {order_sql}
-            LIMIT %s OFFSET %s
+            LIMIT {db_engine.ph()} OFFSET {db_engine.ph()}
         """, magaza_params + [page_size, offset])
         rows = cursor.fetchall()
 

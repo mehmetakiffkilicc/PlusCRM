@@ -5,7 +5,7 @@ export default defineConfig({
   timeout: 90000,
   retries: 1,
   use: {
-    baseURL: 'https://show.xpluscrm.com',
+    baseURL: 'https://show.MarketFlow.com',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     headless: false,
@@ -17,3 +17,4 @@ export default defineConfig({
     },
   ],
 });
+

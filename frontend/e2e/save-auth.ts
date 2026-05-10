@@ -6,7 +6,7 @@ async function saveAuthState() {
   const page = await context.newPage();
 
   console.log('Tarayıcı açıldı. Lütfen giriş yapın...');
-  await page.goto('https://show.xpluscrm.com');
+  await page.goto('https://show.MarketFlow.com');
 
   // Kullanıcının giriş yapmasını bekle (dashboard sayfasına yönlendirilene kadar)
   await page.waitForURL('**/dashboard**', { timeout: 300000 });
@@ -21,3 +21,4 @@ async function saveAuthState() {
 }
 
 saveAuthState().catch(console.error);
+

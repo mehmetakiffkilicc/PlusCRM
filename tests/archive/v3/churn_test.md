@@ -1,6 +1,6 @@
 # Churn Analizi Test Raporu v2 (Filtre Odaklı)
 **Tarih:** 2026-04-29  
-**URL:** https://show.xpluscrm.com/churn-analizi
+**URL:** https://show.MarketFlow.com/churn-analizi
 
 ---
 
@@ -97,3 +97,4 @@ KPI 38.100 risk müşterisi gösteriyor ama liste her koşulda boş.
 
 **Bug Sayısı:** 1 HIGH + 2 MEDIUM + 1 LOW  
 **Genel Durum:** ⚠️ Yıl filtresi çalışıyor, diğerleri sahte veya boş
+

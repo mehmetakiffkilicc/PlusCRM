@@ -22,10 +22,10 @@ trap cleanup TERM INT QUIT
 # Connect to Tailscale
 if [ -n "$TAILSCALE_AUTHKEY" ]; then
     TS_VERSION=$(tailscale version | head -n 1)
-    python log_tailscale.py "Attempting to connect to Tailscale ($TS_VERSION)... Hostname: ${RAILWAY_SERVICE_NAME:-xplus-worker}" "INFO"
+    python log_tailscale.py "Attempting to connect to Tailscale ($TS_VERSION)... Hostname: ${RAILWAY_SERVICE_NAME:-MarketFlow-worker}" "INFO"
     
     # Simplified flags to improve compatibility
-    tailscale up --authkey="$TAILSCALE_AUTHKEY" --hostname="${RAILWAY_SERVICE_NAME:-xplus-worker}" --accept-dns=true --accept-routes > /tmp/tailscale.log 2>&1
+    tailscale up --authkey="$TAILSCALE_AUTHKEY" --hostname="${RAILWAY_SERVICE_NAME:-MarketFlow-worker}" --accept-dns=true --accept-routes > /tmp/tailscale.log 2>&1
 
     
     if [ $? -eq 0 ]; then
@@ -85,3 +85,4 @@ APP_PID=$!
 
 # Wait for the application to finish or for a signal
 wait $APP_PID
+

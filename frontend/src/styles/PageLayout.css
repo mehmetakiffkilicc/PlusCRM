@@ -1,5 +1,5 @@
 /* ============================================================
-   XPlusCRM — Shared Analytics Page Layout
+   MarketFlow — Shared Analytics Page Layout
    Used by: KohortAnalizi, UrunBirliktelik, EnflasyonProfil,
             RakipRiski, HaneAnalizi, MarkaSadakati
    ============================================================ */
@@ -177,3 +177,4 @@
 @media (max-width: 480px) {
   .kpi-summary-grid { grid-template-columns: 1fr; }
 }
+

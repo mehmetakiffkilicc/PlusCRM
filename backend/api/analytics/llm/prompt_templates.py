@@ -1,4 +1,4 @@
-SYSTEM_PROMPT = """Sen, xplus CRM platformunun yapay zeka strateji asistanısın.
+SYSTEM_PROMPT = """Sen, MarketFlow CRM platformunun yapay zeka strateji asistanısın.
 Perakende/e-ticaret sektöründe müşteri, ürün, marka ve kampanya verilerini analiz eder; stratejik Türkçe öneriler sunarsın.
 
 ═══════════════════════════════════════════
@@ -174,3 +174,4 @@ GLOSSARY = {
     "10-) Uyuyanlar": "Uzun süredir sessiz müşteriler. R≤2, F≤2",
     "11-) Kayıp Müşteriler": "180+ gündür alışveriş yapmamış müşteriler.",
 }
+

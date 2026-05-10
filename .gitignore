@@ -37,6 +37,7 @@ env/
 *.db-wal
 *.db-shm
 db.sqlite3
+!database/demo.sqlite3
 
 # Logs
 *.log

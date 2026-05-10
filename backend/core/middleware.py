@@ -18,3 +18,13 @@ class SecurityHeadersMiddleware:
         response['Referrer-Policy'] = 'strict-origin-when-cross-origin'
         response['Permissions-Policy'] = 'geolocation=(), microphone=(), camera=()'
         return response
+
+class DemoBrandingMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        response['X-Project-Author'] = 'Akif (Demo Mode)'
+        response['X-Project-License'] = 'Standard-Commercial-Demo-License'
+        return response

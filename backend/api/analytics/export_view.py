@@ -148,7 +148,7 @@ def _build_excel_response(oneri_ids):
             if keyword:
                 try:
                     cursor.execute(
-                        f"SELECT id, ad, telefon, rfm_segment, tip, onay_durumu FROM musteriler WHERE rfm_segment ILIKE {ph} LIMIT 500",
+                        f"SELECT id, ad, telefon, rfm_segment, tip, onay_durumu FROM musteriler WHERE rfm_segment LIKE {ph} LIMIT 500",
                         [f'%{keyword}%']
                     )
                     segment_customer_map[seg] = cursor.fetchall()
@@ -637,7 +637,7 @@ def get_campaign_target_customers(oneri_id, limit=2000):
         elif oneri_tipi in ['Loyalty', 'Win-Back', 'Retention'] or 'Alıcıları' in hedef_segment:
             segment_clean = hedef_segment.replace(' Alıcıları', '').strip()
             cursor.execute(
-                f"SELECT id, ad, telefon, rfm_segment, tip, onay_durumu FROM musteriler WHERE rfm_segment ILIKE {ph} LIMIT {ph}",
+                f"SELECT id, ad, telefon, rfm_segment, tip, onay_durumu FROM musteriler WHERE rfm_segment LIKE {ph} LIMIT {ph}",
                 [f"%{segment_clean}%", limit]
             )
             customers = cursor.fetchall()
@@ -917,21 +917,21 @@ def export_beklenen_musteriler_excel(request):
         conn = db_engine.get_connection()
         cursor = db_engine.get_dict_cursor(conn)
 
+        tahmini = db_engine.col_date_add_expr('v.son_ziyaret_tarihi', 'v.ort_ziyaret_araligi')
+        today = "CURRENT_DATE" if db_engine.DB_BACKEND == 'postgresql' else "date('now')"
+        last90 = db_engine.date_offset_expr(-90)
+        week_start = db_engine.date_trunc_expr('week', today)
+        yesterday = db_engine.date_offset_expr(-1)
+        week_end = db_engine.date_offset_expr(6, week_start)
+        last_sunday = db_engine.date_offset_expr(-1, week_start)
+
         if tip == 'geciken':
-            date_filter = """
-                (v.son_ziyaret_tarihi::date + ROUND(v.ort_ziyaret_araligi)::int)
-                    BETWEEN (CURRENT_DATE - INTERVAL '90 days')::date
-                        AND (date_trunc('week', CURRENT_DATE)::date - 1)
-            """
+            date_filter = f"{tahmini} BETWEEN {last90} AND {last_sunday}"
             order_sql = "tahmini_ziyaret_tarihi DESC"
             sheet_title = 'Geciken Müşteriler'
             banner_title = 'GECİKEN MÜŞTERİLER — Tahmini Ziyaret Tarihi Geçmiş'
         else:
-            date_filter = """
-                (v.son_ziyaret_tarihi::date + ROUND(v.ort_ziyaret_araligi)::int)
-                    BETWEEN date_trunc('week', CURRENT_DATE)::date
-                        AND (date_trunc('week', CURRENT_DATE) + INTERVAL '6 days')::date
-            """
+            date_filter = f"{tahmini} BETWEEN {week_start} AND {week_end}"
             order_sql = "tahmini_ziyaret_tarihi ASC"
             sheet_title = 'Bu Hafta Beklenen'
             banner_title = 'BU HAFTA BEKLENEN MÜŞTERİLER'
@@ -939,7 +939,7 @@ def export_beklenen_musteriler_excel(request):
         magaza_filter = ""
         magaza_params = []
         if magaza_id:
-            magaza_filter = " AND m.kayit_magazasi = %s"
+            magaza_filter = f" AND m.kayit_magazasi = {db_engine.ph()}"
             magaza_params.append(magaza_id)
 
         cursor.execute(f"""
@@ -949,10 +949,10 @@ def export_beklenen_musteriler_excel(request):
                 m.telefon,
                 o.rfm_segment,
                 v.son_ziyaret_tarihi,
-                (v.son_ziyaret_tarihi::date + ROUND(v.ort_ziyaret_araligi)::int) AS tahmini_ziyaret_tarihi,
-                ROUND(v.ort_ziyaret_araligi::numeric, 1) AS ort_aralik_gun,
-                v.toplam_ziyaret::int AS toplam_ziyaret,
-                (CURRENT_DATE - (v.son_ziyaret_tarihi::date + ROUND(v.ort_ziyaret_araligi)::int)) AS gecikme_gun,
+                {tahmini} AS tahmini_ziyaret_tarihi,
+                ROUND(CAST(v.ort_ziyaret_araligi AS REAL), 1) AS ort_aralik_gun,
+                CAST(v.toplam_ziyaret AS INTEGER) AS toplam_ziyaret,
+                {db_engine.date_diff_days_expr(today, tahmini)} AS gecikme_gun,
                 COALESCE(o.toplam_harcama, 0) AS toplam_harcama,
                 COALESCE(o.ortalama_sepet_tutari, 0) AS ortalama_sepet_tutari,
                 COALESCE(o.ortalama_sepet_tutari, 0) AS tahmini_alisveris_tutari,

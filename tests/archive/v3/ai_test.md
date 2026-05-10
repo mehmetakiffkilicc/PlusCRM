@@ -1,6 +1,6 @@
 # AI Asistan Test Raporu
 **Tarih:** 2026-04-29  
-**URL:** https://show.xpluscrm.com/ai-asistan
+**URL:** https://show.MarketFlow.com/ai-asistan
 
 ---
 
@@ -94,3 +94,4 @@ Veya `chatStore.ts` içinde `startNewSession` sonuna `useUIStore.getState().setC
 
 **Bug Sayısı:** 1 HIGH  
 **Genel Durum:** Geçti (1 kritik UI bug düzeltilmeli)
+
