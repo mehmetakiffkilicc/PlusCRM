@@ -133,9 +133,13 @@ class ApiClient {
       },
       (error) => {
         if (error.response && error.response.status === 401) {
+          // In demo mode with demo-token, we don't want to redirect to login
+          if (this.token === 'demo-token') {
+            console.error('Unauthorized access with demo-token detected. Check backend users.')
+            return Promise.reject(error)
+          }
+
           this.clearToken()
-          // We need to import the store dynamically or use window location to avoid circular deps if any
-          // But for a simple fix, we'll just clear storage and redirect
           localStorage.removeItem('auth_token')
           if (window.location.pathname !== '/giris' && window.location.pathname !== '/kayit') {
             window.location.href = '/giris'

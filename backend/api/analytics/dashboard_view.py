@@ -4257,7 +4257,7 @@ def get_dashboard_kpis(request):
         # ============================================================
         ever_purchased_count = 0
         is_pg = db_engine.DB_BACKEND == "postgresql"
-        mdo_toplam_alisveris = "toplam_alisveris" if is_pg else "ToplamAlisveris"
+        mdo_toplam_alisveris = "toplam_alisveris"
         
         # OPTIMIZATION: satislar tablosu yerine musteridetayozet kullan
         m_ever_where = [f"mdo.{mdo_toplam_alisveris} > 0"]
@@ -4335,7 +4335,7 @@ def get_dashboard_kpis(request):
                 if db_engine.DB_BACKEND == "postgresql":
                     cursor.execute(f"SELECT COUNT(DISTINCT musteri_id) as cnt FROM musteridetayozet WHERE son_alisveris_tarihi < {placeholder}", [churn_thresh])
                 else:
-                    cursor.execute(f"SELECT COUNT(DISTINCT musteri_id) as cnt FROM musteridetayozet WHERE SonAlisverisTarihi < {placeholder}", [churn_thresh])
+                    cursor.execute(f"SELECT COUNT(DISTINCT musteri_id) as cnt FROM musteridetayozet WHERE son_alisveris_tarihi < {placeholder}", [churn_thresh])
                 churn_row = cursor.fetchone()
                 churned_count = (churn_row[0] if not isinstance(churn_row, dict) else churn_row['cnt']) or 0
                 churn_rate = round((churned_count / total_registered * 100), 1) if total_registered > 0 else 0
@@ -4959,7 +4959,7 @@ def dashboard_sqlite_direct(request):
         total_registered = cursor.fetchone()["cnt"] or 0
 
         # Ever Purchased (Müşteri Detay Özet üzerinden HIZLI)
-        mdo_alisveris_col = "toplam_alisveris" if db_engine.DB_BACKEND == "postgresql" else "ToplamAlisveris"
+        mdo_alisveris_col = "toplam_alisveris"
         cursor.execute(f"""
             SELECT COUNT(m.id) as cnt 
             FROM musteriler m
@@ -5053,7 +5053,7 @@ def dashboard_sqlite_direct(request):
         # 6. Churn Rate & Loyalty (Simplified for speed)
         # Churn: Max date in musteridetayozet < today - 120 days
         churn_thresh = (datetime.now() - timedelta(days=120)).strftime("%Y-%m-%d")
-        son_alisveris_col = "son_alisveris_tarihi" if db_engine.DB_BACKEND == "postgresql" else "SonAlisverisTarihi"
+        son_alisveris_col = "son_alisveris_tarihi"
         cursor.execute(f"""
             SELECT COUNT(*) as cnt FROM musteridetayozet 
             WHERE {son_alisveris_col} < {placeholder}

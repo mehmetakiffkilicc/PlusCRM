@@ -19,6 +19,10 @@ class DBLoggingHandler(logging.Handler):
 
     def emit(self, record):
         try:
+            # SQLite kilitlenmelerini önlemek için PostgreSQL değilse DB loglamayı atla
+            if models.DB_BACKEND != "postgresql":
+                return
+                
             log_entry = self.format(record)
             level = record.levelname
             

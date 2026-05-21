@@ -1,39 +1,94 @@
-# 🚀 MarketFlow: Next-Generation AI-Powered Customer Relationship Management
+# 🚀 MarketFlow: AI-Powered Retail Analytics & CRM Platform
+### 📊 Yapay Zekâ Destekli Perakende Analitiği ve Müşteri İlişkileri Yönetimi Platformu
 
-Welcome to **MarketFlow**, a state-of-the-art, data-driven CRM dashboard application. This project demonstrates a full-stack, enterprise-grade application featuring advanced product analytics, customer segmentation, and AI-driven campaign recommendations. 
+[English](#english) | [Türkçe](#türkçe)
 
-*Note: This repository contains an anonymized version of the project created for demonstration purposes. Real customer data and sensitive credentials have been removed or replaced with mock structures.*
+---
 
-## ✨ Key Features
-- **📊 Real-time Product Analytics**: Comprehensive insights into sales trends, category performance, and inventory health with sub-second query performance.
-- **🎯 Intelligent Customer Segmentation (RFM)**: Automated analysis using Recency, Frequency, and Monetary metrics to generate actionable "Customer Scorecards" (Müşteri Karnesi).
-- **🤖 AI-Powered Campaign Recommendations**: Dynamic suggestion engine generating targeted marketing campaigns based on deep behavioral analysis.
-- **📈 Interactive Dashboards**: Premium UI built with modern React components and high-performance charting libraries (ECharts/Recharts).
-- **🛡️ Scalable Backend Architecture**: Robust Python-based APIs handling complex aggregations and data pipelines seamlessly.
+## English
 
-## 🛠️ Technology Stack
-### Frontend
-- **Framework**: React 18 with TypeScript
-- **Styling**: Tailwind CSS & Custom Glassmorphism UI
-- **Data Visualization**: Apache ECharts
-- **Build Tool**: Vite
+MarketFlow is an enterprise-grade, full-stack retail analytics and CRM dashboard application. Designed for modern retail operations, it transforms raw transactional data into actionable insights through advanced product performance tracking, RFM (Recency, Frequency, Monetary) segmentation, cohort analysis, and AI-driven campaign recommendation engines.
 
-### Backend
-- **Framework**: Python (Django / FastAPI)
-- **Database**: PostgreSQL / SQLite (Mocked for Demo)
-- **Data Processing**: Pandas, NumPy
-- **Containerization**: Docker & Docker Compose
+> [!NOTE]
+> This repository contains a fully functional, sanitized demo version of the platform. All personally identifiable information (PII), proprietary business names, and sensitive credentials have been completely scrubbed and replaced with generic mock datasets powered by a local SQLite engine.
 
-## 🚀 Getting Started
+### 📸 Screenshots
+<p align="center">
+  <img src="screenshots/dashboard_overview.png" width="48%" alt="Dashboard Overview" />
+  <img src="screenshots/customer_segmentation.png" width="48%" alt="Customer Segmentation" />
+</p>
+<p align="center">
+  <img src="screenshots/product_analytics.png" width="48%" alt="Product Analytics" />
+  <img src="screenshots/campaign_recommendations.png" width="48%" alt="Campaign Recommendations" />
+</p>
 
-### Prerequisites
+### ✨ Key Features
+- **📊 Interactive Executive Dashboard**: High-fidelity visualization of key business metrics (Revenue, AOV, Active Customers, Churn Rate) using Apache ECharts.
+- **🎯 Advanced Customer Segmentation (RFM)**: Automated classification of customers into 10 distinct segments based on Recency, Frequency, and Monetary scores.
+- **📈 Product & Brand Analytics**: Granular transaction analysis, brand loyalty tracking, and basket analysis (market basket association rules).
+- **🤖 Autonomous Campaign Recommendation**: Generates targeted campaigns (Cross-sell, Up-sell, Churn Prevention) based on buyer behavior, product affinity, and price elasticity.
+- **⚡ High-Performance Cache Layer**: Pre-calculated analytical summary tables providing sub-second page loading speeds for dashboards.
+- **🛡️ SQLite/PostgreSQL Dual Engine**: Out-of-the-box support for database abstraction, seamlessly switching between lightweight SQLite (for local demonstration) and PostgreSQL (for production scales).
+
+---
+
+### 🏛️ System Architecture
+
+```mermaid
+graph TD
+    A[Raw Transactions / SQLite DB] -->|Sync Worker & Scripts| B[Analytical Summary Tables]
+    B -->|Django Rest Framework APIs| C[Secure Backend Layer]
+    C -->|JSON API Responses| D[Vite + React SPA Frontend]
+    D -->|State Management & ECharts| E[Client Dashboard UI]
+    
+    subgraph Python Backend
+        B
+        C
+    end
+    
+    subgraph React Client
+        D
+        E
+    end
+```
+
+---
+
+### 🧮 Data Models & RFM Methodology
+
+The core CRM engine uses the standard **RFM Model** to score and segment the customer base:
+
+1. **Recency ($R$)**: Days since the customer's last purchase.
+   $$\text{Recency} = \text{Current Date} - \text{Last Transaction Date}$$
+2. **Frequency ($F$)**: Total number of distinct receipts/transactions.
+3. **Monetary ($M$)**: Cumulative spend of the customer.
+
+Each customer is scored from $1$ (lowest) to $5$ (highest) across these dimensions, yielding a 3-digit RFM code (e.g., `555` for Champions). Customers are grouped into segments such as:
+- **Champions**: $R \in [4, 5]$, $F \in [4, 5]$, $M \in [4, 5]$
+- **At Risk**: $R \in [1, 2]$, $F \in [3, 5]$, $M \in [3, 5]$
+- **About to Sleep**: $R \approx 3$, $F \leq 2$, $M \leq 2$
+
+#### Pre-Calculated Analytical Caching Schema:
+- `musteridetayozet`: Pre-aggregates customer name, segment, lifecycle value, churn risk, and shopping history.
+- `musterietiketler`: Flags specific buyer patterns (e.g., *Discount Hunter, Snacker, Meat Lover, Evening Shopper*).
+- `grupbirliktelikleri`: Caches Association Rules (Support, Confidence, Lift) for cross-selling recommendations.
+
+---
+
+### 🛠️ Technology Stack
+- **Frontend**: React 18, TypeScript, Vite, Mantine UI Components, Apache ECharts, Axios
+- **Backend**: Python 3.10+, Django 5.x, Django REST Framework, SQLite3 (PostgreSQL dialect compatibility)
+- **Data Engineering**: Pandas, NumPy (for batch analytical operations)
+
+---
+
+### 🚀 Getting Started
+
+#### Prerequisites
 - Node.js (v18+)
 - Python (3.10+)
-- Docker (optional, for containerized setup)
 
-### Local Development Setup
-
-#### 1. Clone the repository
+#### 1. Clone & Project Initialization
 ```bash
 git clone https://github.com/mehmetakiffkilicc/market_analitik.git
 cd market_analitik
@@ -43,35 +98,63 @@ cd market_analitik
 ```bash
 cd backend
 python -m venv .venv
-# On Windows use: .venv\Scripts\activate
-source .venv/bin/activate  
+# Activate virtual environment
+# Windows: .venv\Scripts\activate
+# Unix/macOS: source .venv/bin/activate
 pip install -r requirements.txt
-# Start server
+
+# Run migrations and seed database
+python manage.py migrate
+python -X utf8 generate_mock_db.py
+python -X utf8 rebuild_demo_db_summaries.py
+
+# Start Django Development Server
 python manage.py runserver
 ```
 
 #### 3. Frontend Setup
 ```bash
-cd frontend
+cd ../frontend
 npm install
 npm run dev
 ```
+Open `http://localhost:3001` in your browser.
 
-The application will be available at `http://localhost:5173`.
+---
 
-## 📸 Screenshots
+## Türkçe
 
-![Dashboard Overview](screenshots/dashboard_overview.png)
-![Customer Analysis](screenshots/customer_segmentation.png)
-![Product Analytics](screenshots/product_analytics.png)
-![Campaign Recommendations](screenshots/campaign_recommendations.png)
+MarketFlow, perakende operasyonları için geliştirilmiş, kurumsal düzeyde bir tam-yığın analitik platformu ve CRM paneli uygulamasıdır. Ham işlem verilerini gelişmiş ürün performansı takibi, RFM (Yenilik, Sıklık, Parasal) segmentasyonu, kohort analizi ve yapay zekâ destekli kampanya öneri motorları kullanarak aksiyon alınabilir içgörülere dönüştürür.
 
-## 🔒 Data Anonymization & Privacy
-This repository is a sanitized version of the original production application. 
-- All database dumps have been scrubbed of Personally Identifiable Information (PII).
-- Hardcoded keys, tokens, and environments have been removed.
-- Certain proprietary AI models and internal business logic modules have been replaced with stubs to protect intellectual property.
+> [!NOTE]
+> Bu depo, platformun tamamen işlevsel, temizlenmiş bir demo sürümünü içermektedir. Tüm kişisel veriler (PII), ticari unvanlar ve hassas kimlik bilgileri temizlenmiş; yerel SQLite motoru ile çalışan jenerik veri setleriyle değiştirilmiştir.
 
-## 📄 License
-This project is intended for demonstration purposes. All rights reserved.
+### ✨ Öne Çıkan Özellikler
+- **📊 Etkileşimli Yönetici Paneli**: Apache ECharts kütüphanesiyle Ciro, Ortalama Sepet Tutarı, Aktif Müşteriler ve Churn Oranı gibi kritik metriklerin yüksek kaliteli görselleştirilmesi.
+- **🎯 Gelişmiş Müşteri Segmentasyonu (RFM)**: Müşterileri Yenilik, Sıklık ve Parasal değerlerine göre otomatik olarak 10 farklı segmente sınıflandırma.
+- **📈 Ürün ve Marka Analitiği**: İşlem bazlı satış performansları, marka sadakati takibi ve sepet birliktelik kuralları (Market Basket Analysis).
+- **🤖 Otonom Kampanya Önerileri**: Alışveriş alışkanlıkları, ürün ilişkileri ve fiyat esnekliği modellerine göre hedefli kampanyalar (Çapraz Satış, Churn Önleme) üretme.
+- **⚡ Yüksek Performanslı Önbellek Katmanı**: Panellerin milisaniyeler içinde yüklenmesini sağlayan önceden hesaplanmış analitik özet tabloları.
 
+### 🧮 Analitik Veri Modelleri ve Metotlar
+
+CRM motorunun merkezinde müşteri tabanını skorlamak için klasik **RFM Metodolojisi** kullanılır:
+
+1. **Yenilik (Recency - $R$)**: Müşterinin son alışverişinden bu yana geçen gün sayısı.
+   $$\text{Yenilik} = \text{Mevcut Tarih} - \text{Son Alışveriş Tarihi}$$
+2. **Sıklık (Frequency - $F$)**: Toplam fatura/ziyaret sayısı.
+3. **Parasal Değer (Monetary - $M$)**: Müşterinin yaptığı toplam harcama tutarı.
+
+Müşteriler bu üç boyutta $1$ ile $5$ arasında skorlanır. Elde edilen RFM kodlarına göre (örneğin Şampiyonlar için `555`) segmentler belirlenir.
+
+---
+
+### 🛡️ Data Privacy & Sanitization / Veri Gizliliği
+- **No Real PII**: No email addresses, phone numbers, or physical addresses are stored.
+- **Scrubbed Database**: The default database `database/demo.sqlite3` uses randomly simulated transaction dates, anonymized customer tags, and synthetic product catalogs.
+- **Intellectual Property**: Proprietary predictive modeling algorithms have been stubbed or simplified for public hosting.
+
+---
+
+### 📄 License
+This project is built for portfolio and demonstration purposes. All rights reserved. Mehmet Akif Kılıç.

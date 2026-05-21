@@ -122,15 +122,14 @@ def get_customer_list(request, data_source_id):
         where_clauses.append(f"m.onay_durumu = {ph}")
         params.append(approval_status)
 
-    is_pg = db_engine.DB_BACKEND == 'postgresql'
-    mdo_toplam_harcama = 'toplam_harcama' if is_pg else 'ToplamHarcama'
-    mdo_toplam_alisveris = 'toplam_alisveris' if is_pg else 'ToplamAlisveris'
-    mdo_aktivite_durumu = 'aktivite_durumu' if is_pg else 'AktiviteDurumu'
-    mdo_trend = 'trend' if is_pg else 'Trend'
-    mdo_churn_risk_skoru = 'churn_risk_skoru' if is_pg else 'ChurnRiskSkoru'
-    mdo_musteri_id = 'musteri_id' if is_pg else 'MusteriID'
-    mdo_son_alisveris_tarihi = 'son_alisveris_tarihi' if is_pg else 'SonAlisverisTarihi'
-    mdo_ortalama_sepet = 'ortalama_sepet_tutari' if is_pg else 'OrtalamaSepetTutari'
+    mdo_toplam_harcama = 'toplam_harcama'
+    mdo_toplam_alisveris = 'toplam_alisveris'
+    mdo_aktivite_durumu = 'aktivite_durumu'
+    mdo_trend = 'trend'
+    mdo_churn_risk_skoru = 'churn_risk_skoru'
+    mdo_musteri_id = 'musteri_id'
+    mdo_son_alisveris_tarihi = 'son_alisveris_tarihi'
+    mdo_ortalama_sepet = 'ortalama_sepet_tutari'
 
     if min_spend:
         where_clauses.append(f"o.{mdo_toplam_harcama} >= {ph}")
@@ -435,7 +434,7 @@ def get_customer_detail(request, data_source_id, customer_id):
         # 4. ANA DASHBOARD VERİSİ
         t0 = time.time()
         is_pg = db_engine.DB_BACKEND == 'postgresql'
-        mdo_musteri_id = 'musteri_id' if is_pg else 'MusteriID'
+        mdo_musteri_id = 'musteri_id'
 
         # 3.1. Temel Bilgiler + Özet Tablo
         cursor.execute(f"""
@@ -1003,6 +1002,10 @@ def get_musteri_etiket_ozeti(request, data_source_id):
         sql = f"SELECT {', '.join(filter_parts)} FROM musterietiketler me {filter_join}"
         cursor.execute(sql, join_params)
         counts = cursor.fetchone()
+        if counts:
+            counts = dict(counts)
+        else:
+            counts = {}
 
         # 3. Trend verisi: önceki snapshot ile karşılaştır
         trend_map = {}

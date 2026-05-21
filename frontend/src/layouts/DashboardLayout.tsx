@@ -188,30 +188,13 @@ export default function DashboardLayout() {
 
   const navItems: NavEntry[] = [
     {
-      id: 'g-dashboard',
+      id: 'g-crm',
       label: 'Gösterge & CRM',
       icon: IconLayoutDashboard,
       type: 'group',
       children: [
-         { id: 'home', label: 'Ana Sayfa', icon: IconHome, path: '/' },
-         { id: 'customerportal', label: 'Müşteri Portalı', icon: IconUsers, path: '/musteri-portali' },
-         { id: 'aipaneller', label: 'AI Paneller', icon: IconLayoutDashboard, path: '/ai-paneller' },
-        { id: 'aitakvim', label: 'Kampanya Takvimi', icon: IconCalendar, path: '/ai-takvim' },
-      ],
-    },
-    { type: 'divider' },
-    {
-      id: 'g-strategy',
-      label: 'Stratejik Analiz',
-      icon: IconTarget,
-      type: 'group',
-      children: [
-        { id: 'kohort', label: 'Kohort Analizi', icon: IconCalendarStats, path: '/kohort-analizi' },
-        { id: 'birliktelik', label: 'Ürün Birliktelik', icon: IconLink, path: '/urun-birliktelik' },
-        { id: 'enflasyon', label: 'Enflasyon Profili', icon: IconFlame, path: '/enflasyon-profil' },
-        { id: 'rakipriski', label: 'Rakip Riski', icon: IconShieldX, path: '/rakip-riski' },
-        { id: 'hane', label: 'Hane Analizi', icon: IconHome, path: '/hane-analizi' },
-        { id: 'magazaanalizi', label: 'Mağaza Analizi', icon: IconBuildingStore, path: '/magaza-analizi' },
+        { id: 'dashboard', label: 'Ana Sayfa', icon: IconHome, path: '/' },
+        { id: 'customer-portal', label: 'Müşteri Portalı', icon: IconUsers, path: '/musteri-portali' },
       ],
     },
     { type: 'divider' },
@@ -223,10 +206,7 @@ export default function DashboardLayout() {
       children: [
         { id: 'segmentation', label: 'Segmentasyon', icon: IconTarget, path: '/segmentasyon' },
         { id: 'rfm', label: 'RFM Analizi', icon: IconChartBar, path: '/rfm-analizi' },
-        { id: 'clv', label: 'CLV Analizi', icon: IconCoin, path: '/clv-analizi' },
         { id: 'churn', label: 'Churn Analizi', icon: IconAlertTriangle, path: '/churn-analizi' },
-        { id: 'brandsadakat', label: 'Marka Sadakati', icon: IconDiamond, path: '/marka-sadakati' },
-        { id: 'newcustomers', label: 'Yeni Müşteriler', icon: IconUserPlus, path: '/yeni-musteriler' },
       ],
     },
     { type: 'divider' },
@@ -238,7 +218,6 @@ export default function DashboardLayout() {
       children: [
         { id: 'products', label: 'Ürün Analizi', icon: IconBox, path: '/urunler' },
         { id: 'categoryreport', label: 'Kategori Raporu', icon: IconCategory, path: '/kategori-raporu' },
-        { id: 'brandreport', label: 'Marka Raporu', icon: IconTag, path: '/marka-raporu' },
       ],
     },
     { type: 'divider' },

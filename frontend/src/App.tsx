@@ -14,26 +14,13 @@ const Register = lazy(() => import('./pages/Register'))
 // Lazy load CRM pages
 const RFMAnalysis = lazy(() => import('./pages/RFMAnalysis'))
 const ChurnAnalysis = lazy(() => import('./pages/ChurnAnalysis'))
-const CustomerLifetimeValue = lazy(() => import('./pages/CustomerLifetimeValue'))
 const Segmentation = lazy(() => import('./pages/Segmentation'))
 const Campaigns = lazy(() => import('./pages/Campaigns'))
-const NewCustomers = lazy(() => import('./pages/NewCustomers'))
-const BrandReport = lazy(() => import('./pages/BrandReport'))
 const Products = lazy(() => import('./pages/Products'))
 const CategoryReport = lazy(() => import('./pages/CategoryReport'))
 const Settings = lazy(() => import('./pages/Settings'))
 const CustomerPortal = lazy(() => import('./pages/CustomerPortal'))
 const CampaignSuggestions = lazy(() => import('./components/CampaignSuggestions'))
-const KohortAnalizi = lazy(() => import('./pages/KohortAnalizi'))
-const UrunBirliktelik = lazy(() => import('./pages/UrunBirliktelik'))
-const MarkaSadakati = lazy(() => import('./pages/MarkaSadakati'))
-const EnflasyonProfil = lazy(() => import('./pages/EnflasyonProfil'))
-const RakipRiski = lazy(() => import('./pages/RakipRiski'))
-const HaneAnalizi = lazy(() => import('./pages/HaneAnalizi'))
-const ScheduledCampaigns = lazy(() => import('./pages/ScheduledCampaigns'))
-const AIDashboards = lazy(() => import('./pages/AIDashboards'))
-const AIDashboardDetail = lazy(() => import('./pages/AIDashboardDetail'))
-const StoreAnalysis = lazy(() => import('./pages/StoreAnalysis'))
 
 // 404 Not Found component
 const NotFoundPage = () => {
@@ -111,32 +98,19 @@ export default function App() {
           <Route path="/giris" element={<Navigate to="/" />} />
           <Route path="/kayit" element={<Navigate to="/" />} />
           
-          {/* Dashboard Routes (No longer wrapped in ternary) */}
+          {/* Dashboard Routes */}
           <Route element={<DashboardLayout />}>
             <Route path="/" element={<Suspense fallback={<InlineRouteLoader />}><DashboardHome /></Suspense>} />
             <Route path="/urunler" element={<Suspense fallback={<InlineRouteLoader />}><Products /></Suspense>} />
             <Route path="/rfm-analizi" element={<Suspense fallback={<InlineRouteLoader />}><RFMAnalysis /></Suspense>} />
             <Route path="/churn-analizi" element={<Suspense fallback={<InlineRouteLoader />}><ChurnAnalysis /></Suspense>} />
-            <Route path="/clv-analizi" element={<Suspense fallback={<InlineRouteLoader />}><CustomerLifetimeValue /></Suspense>} />
             <Route path="/segmentasyon" element={<Suspense fallback={<InlineRouteLoader />}><Segmentation /></Suspense>} />
             <Route path="/kampanyalar" element={<Suspense fallback={<InlineRouteLoader />}><Campaigns /></Suspense>} />
-            <Route path="/yeni-musteriler" element={<Suspense fallback={<InlineRouteLoader />}><NewCustomers /></Suspense>} />
-
-            <Route path="/marka-raporu" element={<Suspense fallback={<InlineRouteLoader />}><BrandReport /></Suspense>} />
             <Route path="/kategori-raporu" element={<Suspense fallback={<InlineRouteLoader />}><CategoryReport /></Suspense>} />
             <Route path="/musteri-portali" element={<Suspense fallback={<InlineRouteLoader />}><CustomerPortal /></Suspense>} />
             <Route path="/ayarlar" element={<Suspense fallback={<InlineRouteLoader />}><Settings /></Suspense>} />
             <Route path="/kampanya-onerileri" element={<Suspense fallback={<InlineRouteLoader />}><CampaignSuggestions /></Suspense>} />
-            <Route path="/kohort-analizi" element={<Suspense fallback={<InlineRouteLoader />}><KohortAnalizi /></Suspense>} />
-            <Route path="/urun-birliktelik" element={<Suspense fallback={<InlineRouteLoader />}><UrunBirliktelik /></Suspense>} />
-            <Route path="/marka-sadakati" element={<Suspense fallback={<InlineRouteLoader />}><MarkaSadakati /></Suspense>} />
-            <Route path="/enflasyon-profil" element={<Suspense fallback={<InlineRouteLoader />}><EnflasyonProfil /></Suspense>} />
-            <Route path="/rakip-riski" element={<Suspense fallback={<InlineRouteLoader />}><RakipRiski /></Suspense>} />
-            <Route path="/hane-analizi" element={<Suspense fallback={<InlineRouteLoader />}><HaneAnalizi /></Suspense>} />
-            <Route path="/ai-takvim" element={<Suspense fallback={<InlineRouteLoader />}><ScheduledCampaigns /></Suspense>} />
-            <Route path="/ai-paneller" element={<Suspense fallback={<InlineRouteLoader />}><AIDashboards /></Suspense>} />
-            <Route path="/ai-paneller/:id" element={<Suspense fallback={<InlineRouteLoader />}><AIDashboardDetail /></Suspense>} />
-            <Route path="/magaza-analizi" element={<Suspense fallback={<InlineRouteLoader />}><StoreAnalysis /></Suspense>} />
+            
             {/* Fallback for unknown routes */}
             <Route path="*" element={<NotFoundPage />} />
           </Route>

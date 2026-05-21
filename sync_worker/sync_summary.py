@@ -202,6 +202,7 @@ def update_daily_metrics_summary(conn, target_date: str):
     cursor = conn.cursor()
     
     tarih_clause = "s.tarih" if DB_BACKEND == "postgresql" else "date(s.tarih)"
+    ph = "%s" if DB_BACKEND == "postgresql" else "?"
     
     query = f"""
         SELECT 
@@ -219,7 +220,7 @@ def update_daily_metrics_summary(conn, target_date: str):
         FROM satislar s
         LEFT JOIN musteriler m ON s.musteri_id = m.id
         LEFT JOIN musteridetayozet mdo ON s.musteri_id = mdo.musteri_id
-        WHERE {tarih_clause} = %s
+        WHERE {tarih_clause} = {ph}
         GROUP BY 
             s.tarih, COALESCE(s.magaza_id, 0), COALESCE(s.kategori_id, 0), 
             COALESCE(s.marka_id, 0), COALESCE(m.tip, 'Bilinmiyor'), 
@@ -1064,7 +1065,7 @@ def update_rfm_analysis(conn=None):
     logger.info("RFM Analizi güncelleniyor (rfm_daily_update.py üzerinden)...")
     try:
         backend_dir = os.path.join(BASE_DIR, "backend")
-        script_path = os.path.join(backend_dir, "rfm_daily_update.py")
+        script_path = os.path.join(backend_dir, "scripts", "rfm_daily_update.py")
 
         if not os.path.exists(script_path):
             logger.error(f"❌ rfm_daily_update.py bulunamadı: {script_path}")
@@ -1657,7 +1658,7 @@ def update_category_analiz_ozet(conn, where_clause=""):
                 FROM grupbirliktelikleri gb
                 JOIN kategoriler k2 ON gb.kategori_id_2 = k2.id
                 WHERE gb.kategori_id_1 IN ({p_str})
-                  AND k2.ana != %s
+                  AND k2.ana != {ph}
                   AND k2.ana IS NOT NULL
                   AND gb.tip = 'CAT_ONLY_SQL'
                 GROUP BY k2.ana

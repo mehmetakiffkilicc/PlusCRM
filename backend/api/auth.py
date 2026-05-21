@@ -40,6 +40,17 @@ def create_jwt_token(user_id, email):
 
 def verify_jwt_token(token):
     """Verify JWT-like token and extract payload"""
+    # Demo Mode Bypass
+    if token == 'demo-token':
+        from django.contrib.auth.models import User
+        user = User.objects.filter(is_active=True).first()
+        user_id = user.id if user else 1
+        return {
+            'user_id': user_id,
+            'email': 'demo@MarketFlow.com',
+            'exp': int((datetime.utcnow() + timedelta(hours=24)).timestamp())
+        }
+
     try:
         parts = token.split('.')
         if len(parts) != 3:

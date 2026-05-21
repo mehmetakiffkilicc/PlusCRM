@@ -185,7 +185,8 @@ def create_schema():
             tip {text_type},
             onay_durumu {text_type},
             kayit_tarihi {date_type},
-            kayit_magazasi {text_type}
+            kayit_magazasi {text_type},
+            rfm_updated_at {text_type}
         )
     """)
     
@@ -414,6 +415,25 @@ def create_schema():
         )
     """)
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_encoksatanlar_query ON encoksatanlar(donem_tipi, donem_degeri, grup_tipi)")
+
+    cursor.execute(f"""
+        CREATE TABLE IF NOT EXISTS kategori_analiz_ozet (
+            kategori_adi {text_type} NOT NULL,
+            level {text_type} NOT NULL,
+            total_revenue {real_type} DEFAULT 0,
+            total_receipts INTEGER DEFAULT 0,
+            total_customers INTEGER DEFAULT 0,
+            total_quantity {real_type} DEFAULT 0,
+            avg_price {real_type} DEFAULT 0,
+            trends_json {text_type},
+            top_products_json {text_type},
+            rfm_json {text_type},
+            associations_json {text_type},
+            guncelleme_tarihi {datetime_type} DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (kategori_adi, level)
+        )
+    """)
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_kao_kategori ON kategori_analiz_ozet(kategori_adi, level)")
 
     cursor.execute(f"""
         CREATE TABLE IF NOT EXISTS syncmeta (
@@ -840,6 +860,7 @@ def create_schema():
     add_col_if_not_exists('urunler', 'yonetici_id', 'INTEGER')
     add_col_if_not_exists('kategoriler', 'yonetici_id', 'INTEGER')
     add_col_if_not_exists('otomatikkampanyaonerileri', 'yonetici_id', 'INTEGER')
+    add_col_if_not_exists('musteriler', 'rfm_updated_at', text_type)
     # Eski satinalmacilar tablosunu kategori_yoneticileri olarak migrate et
     try:
         cursor.execute("ALTER TABLE satinalmacilar RENAME TO kategori_yoneticileri")

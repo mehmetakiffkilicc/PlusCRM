@@ -55,11 +55,15 @@ def ensure_cache_tables(cursor, conn):
         'cache_marka_sadakati',
         'cache_kategori_terk',
     ]
+    is_pg = (db_engine.DB_BACKEND == "postgresql")
+    pk_auto = "SERIAL PRIMARY KEY" if is_pg else "INTEGER PRIMARY KEY AUTOINCREMENT"
+    json_type = "JSONB" if is_pg else "TEXT"
+    
     for tablo in tables:
         cursor.execute(f"""
             CREATE TABLE IF NOT EXISTS {tablo} (
-                id SERIAL PRIMARY KEY,
-                veri JSONB NOT NULL,
+                id {pk_auto},
+                veri {json_type} NOT NULL,
                 hesaplama_tarihi TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 sure_saniye FLOAT
             )
@@ -71,8 +75,9 @@ def ensure_cache_tables(cursor, conn):
 def write_cache(cursor, conn, tablo: str, veri: dict, sure: float):
     """Cache tablosuna yaz — eski kaydı sil, yeni ekle."""
     cursor.execute(f"DELETE FROM {tablo}")
+    ph = db_engine.placeholder()
     cursor.execute(
-        f"INSERT INTO {tablo} (veri, hesaplama_tarihi, sure_saniye) VALUES (%s, %s, %s)",
+        f"INSERT INTO {tablo} (veri, hesaplama_tarihi, sure_saniye) VALUES ({ph}, {ph}, {ph})",
         (json.dumps(veri, ensure_ascii=False, default=str), datetime.now(), round(sure, 2))
     )
     conn.commit()
@@ -97,10 +102,11 @@ def build_kohort(cursor, conn, max_ay=18):
     logger.info("Kohort analizi hesaplanıyor...")
     t0 = datetime.now()
 
-    cursor.execute("""
+    strftime_ilk = db_engine.strftime_expr('%Y-%m', 'md.ilk_alisveris_tarihi')
+    cursor.execute(f"""
         SELECT
             md.musteri_id,
-            TO_CHAR(md.ilk_alisveris_tarihi, 'YYYY-MM') as kohort_ay
+            {strftime_ilk} as kohort_ay
         FROM musteridetayozet md
         WHERE md.ilk_alisveris_tarihi IS NOT NULL
     """)
@@ -121,14 +127,15 @@ def build_kohort(cursor, conn, max_ay=18):
             musteri_kohort[mid] = k
             kohort_boyutlari[k] = kohort_boyutlari.get(k, 0) + 1
 
-    cursor.execute("""
+    strftime_tarih = db_engine.strftime_expr('%Y-%m', 'tarih')
+    cursor.execute(f"""
         SELECT
             musteri_id,
-            TO_CHAR(tarih, 'YYYY-MM') as alis_ay
+            {strftime_tarih} as alis_ay
         FROM satislar
         WHERE musteri_id IS NOT NULL
           AND tarih IS NOT NULL
-        GROUP BY musteri_id, TO_CHAR(tarih, 'YYYY-MM')
+        GROUP BY musteri_id, {strftime_tarih}
     """)
 
     kohort_aktivite = defaultdict(lambda: defaultdict(set))
@@ -183,7 +190,10 @@ def build_enflasyon(cursor, conn):
     logger.info("Enflasyon dayanıklılık profili hesaplanıyor...")
     t0 = datetime.now()
 
-    cursor.execute("""
+    is_pg = (db_engine.DB_BACKEND == "postgresql")
+    true_val = "TRUE" if is_pg else "1"
+
+    cursor.execute(f"""
         SELECT
             m.rfm_segment,
             COUNT(*) as musteri_sayisi,
@@ -192,8 +202,8 @@ def build_enflasyon(cursor, conn):
             AVG(dk.harcama_degisim_3ay_yuzde) as ort_harcama_degisim_3ay,
             AVG(dk.ziyaret_degisim_3ay_yuzde) as ort_ziyaret_degisim_3ay,
             AVG(dk.harcama_degisim_6ay_yuzde) as ort_harcama_degisim_6ay,
-            COUNT(CASE WHEN me.enflasyon_stokcusu = TRUE THEN 1 END) as stokcu_sayisi,
-            COUNT(CASE WHEN me.fiyat_hassas = TRUE THEN 1 END) as fiyat_hassas_sayisi
+            COUNT(CASE WHEN me.enflasyon_stokcusu = {true_val} THEN 1 END) as stokcu_sayisi,
+            COUNT(CASE WHEN me.fiyat_hassas = {true_val} THEN 1 END) as fiyat_hassas_sayisi
         FROM musteriler m
         JOIN musterifiyatfeatures pf ON m.id = pf.musteri_id
         JOIN musteridonem_karsilastirma dk ON m.id = dk.musteri_id
@@ -205,7 +215,7 @@ def build_enflasyon(cursor, conn):
     """)
     segment_analiz = [dict(r) for r in cursor.fetchall()]
 
-    cursor.execute("""
+    cursor.execute(f"""
         SELECT
             m.id, m.ad, m.rfm_segment,
             md.toplam_harcama as toplam_harcama,
@@ -218,17 +228,17 @@ def build_enflasyon(cursor, conn):
         JOIN musterifiyatfeatures pf ON m.id = pf.musteri_id
         JOIN musteridonem_karsilastirma dk ON m.id = dk.musteri_id
         LEFT JOIN musteridetayozet md ON m.id = md.musteri_id
-        WHERE me.enflasyon_stokcusu = TRUE
+        WHERE me.enflasyon_stokcusu = {true_val}
         ORDER BY dk.harcama_degisim_3ay_yuzde DESC
         LIMIT 50
     """)
     stokcu_liste = [dict(r) for r in cursor.fetchall()]
 
-    cursor.execute("""
+    cursor.execute(f"""
         SELECT
             COUNT(*) as toplam_musteri,
-            COUNT(CASE WHEN me.enflasyon_stokcusu = TRUE THEN 1 END) as stokcu_sayisi,
-            COUNT(CASE WHEN me.fiyat_hassas = TRUE THEN 1 END) as fiyat_hassas_sayisi,
+            COUNT(CASE WHEN me.enflasyon_stokcusu = {true_val} THEN 1 END) as stokcu_sayisi,
+            COUNT(CASE WHEN me.fiyat_hassas = {true_val} THEN 1 END) as fiyat_hassas_sayisi,
             AVG(pf.indirim_oran_yuzde) as genel_indirim_oran,
             AVG(dk.harcama_degisim_3ay_yuzde) as genel_harcama_degisim
         FROM musteriler m
@@ -252,55 +262,72 @@ def build_rakip_riski(cursor, conn):
     logger.info("Rakip riski skoru hesaplanıyor...")
     t0 = datetime.now()
 
-    cursor.execute("""
-        SELECT
-            m.id, m.ad, m.rfm_segment,
-            md.toplam_harcama as toplam_harcama,
-            COALESCE(dk.terk_edilen_kategori, 0) as terk_edilen_kategori,
-            COALESCE(dk.harcama_degisim_3ay_yuzde, 0) as harcama_degisim_3ay,
-            COALESCE(dk.ziyaret_degisim_3ay_yuzde, 0) as ziyaret_degisim_3ay,
+    is_pg = (db_engine.DB_BACKEND == "postgresql")
+    true_val = "TRUE" if is_pg else "1"
+
+    if is_pg:
+        skor_expr = """
             LEAST(100, GREATEST(0,
                 CASE WHEN me.kategori_terk_eden = TRUE THEN 30 ELSE 0 END +
                 CASE WHEN me.sepeti_daralan = TRUE THEN 20 ELSE 0 END +
                 CASE WHEN me.kaybedilme_riski_yuksek = TRUE THEN 25 ELSE 0 END +
                 CASE WHEN me.soguyan_musteri = TRUE THEN 15 ELSE 0 END +
                 CASE WHEN COALESCE(dk.terk_edilen_kategori, 0) > 2 THEN 10 ELSE 0 END
-            )) as rakip_riski_skoru
+            ))
+        """
+    else:
+        skor_sum = """
+            (CASE WHEN me.kategori_terk_eden = 1 THEN 30 ELSE 0 END +
+             CASE WHEN me.sepeti_daralan = 1 THEN 20 ELSE 0 END +
+             CASE WHEN me.kaybedilme_riski_yuksek = 1 THEN 25 ELSE 0 END +
+             CASE WHEN me.soguyan_musteri = 1 THEN 15 ELSE 0 END +
+             CASE WHEN COALESCE(dk.terk_edilen_kategori, 0) > 2 THEN 10 ELSE 0 END)
+        """
+        skor_expr = f"""
+            CASE 
+                WHEN {skor_sum} < 0 THEN 0 
+                WHEN {skor_sum} > 100 THEN 100 
+                ELSE {skor_sum} 
+            END
+        """
+
+    cursor.execute(f"""
+        SELECT
+            m.id, m.ad, m.rfm_segment,
+            md.toplam_harcama as toplam_harcama,
+            COALESCE(dk.terk_edilen_kategori, 0) as terk_edilen_kategori,
+            COALESCE(dk.harcama_degisim_3ay_yuzde, 0) as harcama_degisim_3ay,
+            COALESCE(dk.ziyaret_degisim_3ay_yuzde, 0) as ziyaret_degisim_3ay,
+            {skor_expr} as rakip_riski_skoru
         FROM musteriler m
         JOIN musterietiketler me ON m.id = me.musteri_id
         LEFT JOIN musteridetayozet md ON m.id = md.musteri_id
         LEFT JOIN musteridonem_karsilastirma dk ON m.id = dk.musteri_id
         WHERE 1=1
           AND (
-            me.kategori_terk_eden = TRUE
-            OR me.sepeti_daralan = TRUE
-            OR me.kaybedilme_riski_yuksek = TRUE
+            me.kategori_terk_eden = {true_val}
+            OR me.sepeti_daralan = {true_val}
+            OR me.kaybedilme_riski_yuksek = {true_val}
           )
         ORDER BY rakip_riski_skoru DESC, toplam_harcama DESC
         LIMIT 200
     """)
     risk_liste = [dict(r) for r in cursor.fetchall()]
 
-    cursor.execute("""
+    cursor.execute(f"""
         SELECT
-            COUNT(*) FILTER (WHERE skor >= 60) as yuksek,
-            COUNT(*) FILTER (WHERE skor >= 30 AND skor < 60) as orta,
-            COUNT(*) FILTER (WHERE skor < 30) as dusuk,
+            SUM(CASE WHEN skor >= 60 THEN 1 ELSE 0 END) as yuksek,
+            SUM(CASE WHEN skor >= 30 AND skor < 60 THEN 1 ELSE 0 END) as orta,
+            SUM(CASE WHEN skor < 30 THEN 1 ELSE 0 END) as dusuk,
             COUNT(*) as toplam
         FROM (
-            SELECT LEAST(100, GREATEST(0,
-                CASE WHEN me.kategori_terk_eden = TRUE THEN 30 ELSE 0 END +
-                CASE WHEN me.sepeti_daralan = TRUE THEN 20 ELSE 0 END +
-                CASE WHEN me.kaybedilme_riski_yuksek = TRUE THEN 25 ELSE 0 END +
-                CASE WHEN me.soguyan_musteri = TRUE THEN 15 ELSE 0 END +
-                CASE WHEN COALESCE(dk.terk_edilen_kategori, 0) > 2 THEN 10 ELSE 0 END
-            )) as skor
+            SELECT {skor_expr} as skor
             FROM musteriler m
             JOIN musterietiketler me ON m.id = me.musteri_id
             LEFT JOIN musteridonem_karsilastirma dk ON m.id = dk.musteri_id
-            WHERE me.kategori_terk_eden = TRUE
-               OR me.sepeti_daralan = TRUE
-               OR me.kaybedilme_riski_yuksek = TRUE
+            WHERE me.kategori_terk_eden = {true_val}
+               OR me.sepeti_daralan = {true_val}
+               OR me.kaybedilme_riski_yuksek = {true_val}
         ) sub
     """)
     dagilim_row = cursor.fetchone()
@@ -428,6 +455,9 @@ def build_marka_sadakati(cursor, conn):
     logger.info("Marka sadakati hesaplanıyor...")
     t0 = datetime.now()
 
+    is_pg = (db_engine.DB_BACKEND == "postgresql")
+    round_expr = "ROUND(AVG(toplam_harcama)::numeric, 0)" if is_pg else "ROUND(AVG(toplam_harcama), 0)"
+
     # musterimarka_dagilimi: musteri_id, marka_adi, fis_sayisi, toplam_harcama, toplam_miktar
     # marka_id yok — marka_adi (text) üzerinden gruplama yapıyoruz
 
@@ -467,11 +497,11 @@ def build_marka_sadakati(cursor, conn):
     """)
     sadakat_rows = [dict(r) for r in cursor.fetchall()]
 
-    cursor.execute("""
+    cursor.execute(f"""
         SELECT
             marka_adi as marka,
             COUNT(DISTINCT musteri_id) as musteri_sayisi,
-            ROUND(AVG(toplam_harcama)::numeric, 0) as ort_musteri_harcama,
+            {round_expr} as ort_musteri_harcama,
             SUM(toplam_harcama) as toplam_harcama
         FROM musterimarka_dagilimi
         WHERE marka_adi IS NOT NULL
@@ -493,7 +523,10 @@ def build_kategori_terk(cursor, conn):
     logger.info("Kategori terk listesi hesaplanıyor...")
     t0 = datetime.now()
 
-    cursor.execute("""
+    is_pg = (db_engine.DB_BACKEND == "postgresql")
+    true_val = "TRUE" if is_pg else "1"
+
+    cursor.execute(f"""
         SELECT
             m.id, m.ad, m.rfm_segment,
             COALESCE(md.toplam_harcama, 0) as toplam_harcama,
@@ -504,17 +537,17 @@ def build_kategori_terk(cursor, conn):
         JOIN musterietiketler me ON m.id = me.musteri_id
         LEFT JOIN musteridonem_karsilastirma dk ON m.id = dk.musteri_id
         LEFT JOIN musteridetayozet md ON m.id = md.musteri_id
-        WHERE me.kategori_terk_eden = TRUE
+        WHERE me.kategori_terk_eden = {true_val}
         ORDER BY dk.terk_edilen_kategori DESC, md.toplam_harcama DESC
         LIMIT 100
     """)
     terk_listesi = [dict(r) for r in cursor.fetchall()]
 
-    cursor.execute("""
+    cursor.execute(f"""
         SELECT COUNT(*) as toplam
         FROM musteriler m
         JOIN musterietiketler me ON m.id = me.musteri_id
-        WHERE me.kategori_terk_eden = TRUE
+        WHERE me.kategori_terk_eden = {true_val}
     """)
     row = cursor.fetchone()
     toplam = int(val(row, 'toplam', 0))
